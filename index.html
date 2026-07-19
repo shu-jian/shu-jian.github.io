@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>书简 · 繁体电子书转简体</title>
+<meta name="description" content="把繁体中文电子书（EPUB / TXT）转换为简体中文。全部转换在浏览器本地完成，文件不会上传到任何服务器。">
+<style>
+:root{
+  --indigo:#16233B;          /* 磁青书衣 */
+  --indigo-deep:#101A2C;
+  --paper:#F7F2E6;           /* 内页纸色 */
+  --paper-soft:#FCF8EE;
+  --paper-edge:#E7DEC9;
+  --ink:#23241F;
+  --ink-soft:#6B675B;
+  --seal:#AF3A2A;            /* 朱砂印色 */
+  --seal-deep:#8F2C20;
+  --hairline:rgba(35,36,31,.22);
+  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",serif;
+  --sans:"PingFang SC","Hiragino Sans GB","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  min-height:100vh;
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.014) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(-45deg, rgba(0,0,0,.05) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.7;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:0 20px 48px;
+}
+a{color:inherit}
+
+/* ── 顶栏 ─────────────────────────── */
+.topbar{
+  width:100%;max-width:860px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:26px 4px 34px;color:var(--paper);
+}
+.brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+.sealpair{display:flex;align-items:center;gap:7px;font-family:var(--serif)}
+.sealpair .stamp{
+  width:34px;height:34px;display:grid;place-items:center;
+  font-size:19px;font-weight:700;line-height:1;border-radius:3px;
+}
+.stamp.fan{background:var(--seal);color:#FBF3E4;box-shadow:inset 0 0 0 1.5px rgba(251,243,228,.55)}
+.stamp.jian{background:transparent;color:var(--paper);box-shadow:inset 0 0 0 1.5px rgba(247,242,230,.75)}
+.sealpair .arrow{color:rgba(247,242,230,.55);font-size:13px}
+.wordmark{font-family:var(--serif);font-size:21px;letter-spacing:.14em;font-weight:600}
+.topnote{font-size:12.5px;letter-spacing:.06em;color:rgba(247,242,230,.62);text-align:right}
+
+/* ── 纸页面板 ─────────────────────── */
+.sheet-wrap{position:relative;width:100%;max-width:760px}
+.slip{
+  position:absolute;left:-64px;top:34px;width:46px;
+  writing-mode:vertical-rl;
+  background:var(--paper);
+  border:1px solid rgba(35,36,31,.4);
+  border-top:4px solid var(--seal);
+  padding:20px 0 16px;
+  font-family:var(--serif);font-size:14.5px;letter-spacing:.42em;color:var(--ink);
+  text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+.slip small{display:block;font-size:10.5px;letter-spacing:.34em;color:var(--ink-soft);margin-top:10px}
+.sheet{
+  position:relative;
+  background:var(--paper);
+  border-radius:4px;
+  padding:44px 48px 40px;
+  box-shadow:0 2px 0 var(--paper-edge), 0 5px 0 rgba(231,222,201,.55), 0 24px 60px rgba(0,0,0,.45);
+  animation:rise .45s ease-out both;
+}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+
+h1{font-family:var(--serif);font-size:clamp(24px,4.4vw,33px);font-weight:700;letter-spacing:.02em;line-height:1.45}
+.lede{margin-top:10px;color:var(--ink-soft);font-size:14.5px;max-width:56ch}
+.lede b{color:var(--ink);font-weight:600}
+
+/* ── 转换方案 ─────────────────────── */
+.scheme{margin-top:26px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.scheme label{font-family:var(--serif);font-weight:600;letter-spacing:.08em;font-size:14.5px}
+.scheme select{
+  font-family:var(--sans);font-size:14px;color:var(--ink);
+  background:var(--paper-soft);
+  border:1px solid var(--hairline);border-radius:3px;
+  padding:8px 34px 8px 12px;line-height:1.4;
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%236B675B' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+  cursor:pointer;max-width:100%;
+}
+.scheme select:focus-visible{outline:2px solid var(--seal);outline-offset:2px}
+
+/* ── 拖放区 ──────────────────────── */
+.drop{
+  margin-top:18px;display:block;cursor:pointer;
+  border:1.5px dashed rgba(35,36,31,.42);border-radius:4px;
+  padding:44px 24px;text-align:center;
+  transition:border-color .15s, background-color .15s;
+}
+.drop:hover,.drop.drag{border-color:var(--seal);background:rgba(175,58,42,.045)}
+.drop:focus-within{outline:2px solid var(--seal);outline-offset:3px}
+.drop.disabled{opacity:.45;cursor:wait;pointer-events:none}
+.drop .main{font-family:var(--serif);font-size:19px;font-weight:600;letter-spacing:.04em}
+.drop .sub{margin-top:8px;font-size:13px;color:var(--ink-soft)}
+.drop input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+
+.engine{margin-top:12px;font-size:12.5px;color:var(--ink-soft);display:flex;align-items:center;gap:8px;min-height:20px}
+.engine .dot{width:7px;height:7px;border-radius:50%;background:#B99A3F;flex:none}
+.engine.ready .dot{background:#4A7A46}
+.engine.error .dot{background:var(--seal)}
+.engine button{
+  font-family:var(--sans);font-size:12.5px;color:var(--seal);background:none;border:none;
+  text-decoration:underline;cursor:pointer;padding:0;
+}
+
+/* ── 文件列表 ─────────────────────── */
+.files{margin-top:22px;display:flex;flex-direction:column;gap:12px}
+.card{
+  background:var(--paper-soft);
+  border:1px solid rgba(35,36,31,.16);border-radius:3px;
+  padding:14px 16px 12px;
+}
+.card .row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.card .name{font-family:var(--serif);font-weight:600;font-size:15px;word-break:break-all}
+.card .size{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);flex:none}
+.bar{margin-top:10px;height:2px;background:rgba(35,36,31,.12);border-radius:1px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--seal);transition:width .2s}
+.card .status{margin-top:8px;font-size:12.5px;color:var(--ink-soft);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card.err .status{color:var(--seal-deep)}
+.card.err .bar i{background:rgba(175,58,42,.35);width:100%}
+.dl{
+  font-family:var(--sans);font-size:13px;letter-spacing:.05em;
+  background:var(--seal);color:#FBF3E4;border:none;border-radius:3px;
+  padding:7px 16px;cursor:pointer;text-decoration:none;display:inline-block;
+}
+.dl:hover{background:var(--seal-deep)}
+.dl:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* ── 页脚 ────────────────────────── */
+.foot{
+  width:100%;max-width:760px;margin-top:30px;
+  color:rgba(247,242,230,.55);font-size:12.5px;letter-spacing:.04em;
+  text-align:center;line-height:2;
+}
+.foot a{color:rgba(247,242,230,.78);text-underline-offset:3px}
+
+@media (max-width:880px){
+  .slip{display:none}
+  .sheet{padding:32px 24px 30px}
+  .topbar{padding-top:20px;padding-bottom:24px}
+  .topnote{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#" onclick="return false">
+    <span class="sealpair" aria-hidden="true">
+      <span class="stamp fan">繁</span><span class="arrow">→</span><span class="stamp jian">简</span>
+    </span>
+    <span class="wordmark">书简</span>
+  </a>
+  <div class="topnote">本地转换 · 文件不出本机</div>
+</header>
+
+<main class="sheet-wrap">
+  <div class="slip" aria-hidden="true">繁體轉簡體<small>檔案不出本機</small></div>
+
+  <div class="sheet">
+    <h1>把繁体电子书，变成简体。</h1>
+    <p class="lede">支持 <b>EPUB</b> 与 <b>TXT</b>。转换由 OpenCC 词库按词处理（「頭髮」变「头发」，「乾坤」仍是「乾坤」），全过程在你的浏览器里完成，<b>文件不会上传到任何服务器</b>。</p>
+
+    <div class="scheme">
+      <label for="scheme">转换方案</label>
+      <select id="scheme">
+        <option value="t|cn|zh-Hans|简体" selected>繁体 → 简体（通用）</option>
+        <option value="tw|cn|zh-Hans|简体">台湾正体 → 简体</option>
+        <option value="twp|cn|zh-Hans|简体">台湾正体 → 简体（含用词：滑鼠→鼠标）</option>
+        <option value="hk|cn|zh-Hans|简体">香港繁体 → 简体</option>
+        <option value="cn|tw|zh-TW|繁體">简体 → 台湾正体</option>
+        <option value="cn|hk|zh-HK|繁體">简体 → 香港繁体</option>
+      </select>
+    </div>
+
+    <label class="drop" id="drop">
+      <input type="file" id="picker" accept=".epub,.txt" multiple>
+      <div class="main">把文件拖到这里，或点击选择</div>
+      <div class="sub">支持 .epub 与 .txt · 可一次选择多个</div>
+    </label>
+
+    <div class="engine" id="engine"><span class="dot"></span><span id="engineText">正在加载转换词库（约 1.5 MB）…</span></div>
+
+    <div class="files" id="files" aria-live="polite"></div>
+  </div>
+</main>
+
+<footer class="foot">
+  词库来自开源项目 <a href="https://github.com/nk2028/opencc-js" target="_blank" rel="noopener">OpenCC (opencc-js)</a> · 本页为纯静态网页，可托管于 GitHub Pages 等免费空间<br>
+  暂不支持 MOBI / AZW3 / PDF，可先用 Calibre 转成 EPUB 再来
+</footer>
+
+<script>
+/* ============================================================
+   书简 · 繁体电子书转简体
+   纯前端实现：OpenCC (opencc-js) 负责简繁转换，JSZip 负责
+   解包 / 重打包 EPUB。所有处理均在浏览器内存中完成。
+   ============================================================ */
+
+const $ = (s) => document.querySelector(s);
+const tick = () => new Promise((r) => setTimeout(r, 0));
+
+/* ---------- 依赖加载（多 CDN 依次回退） ---------- */
+const CDN_JSZIP = [
+  'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
+  'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js',
+  'https://fastly.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js',
+];
+const CDN_OPENCC = [
+  'https://cdn.jsdelivr.net/npm/opencc-js@1.4.1/dist/umd/full.js',
+  'https://fastly.jsdelivr.net/npm/opencc-js@1.4.1/dist/umd/full.js',
+  'https://unpkg.com/opencc-js@1.4.1/dist/umd/full.js',
+];
+
+function loadFrom(urls) {
+  return new Promise((resolve, reject) => {
+    const next = (i) => {
+      if (i >= urls.length) return reject(new Error('all CDNs failed'));
+      const s = document.createElement('script');
+      s.src = urls[i];
+      s.onload = () => resolve();
+      s.onerror = () => { s.remove(); next(i + 1); };
+      document.head.appendChild(s);
+    };
+    next(0);
+  });
+}
+
+let engineReady = false;
+async function loadEngines() {
+  const box = $('#engine'), text = $('#engineText'), drop = $('#drop');
+  box.className = 'engine';
+  text.textContent = '正在加载转换词库（约 1.5 MB）…';
+  drop.classList.add('disabled');
+  try {
+    if (!window.JSZip) await loadFrom(CDN_JSZIP);
+    if (!window.OpenCC) await loadFrom(CDN_OPENCC);
+    engineReady = true;
+    box.classList.add('ready');
+    text.textContent = '词库就绪，可以开始转换。';
+    drop.classList.remove('disabled');
+  } catch (e) {
+    box.classList.add('error');
+    text.innerHTML = '词库加载失败，请检查网络后 <button id="retry">重试</button>（受限的预览环境会拦截外部脚本，把本文件下载后用浏览器打开即可正常使用）';
+    $('#retry').addEventListener('click', loadEngines);
+  }
+}
+loadEngines();
+
+/* ---------- 转换核心 ---------- */
+const TEXT_EXT = /\.(x?html?|opf|ncx|xml|txt|smil)$/i;
+
+function currentScheme() {
+  const [from, to, lang, tag] = $('#scheme').value.split('|');
+  return { convert: OpenCC.Converter({ from, to }), lang, tag };
+}
+
+/* 链接里 URL 编码的中文（如 %E5%BE%8C%E8%A8%98.xhtml）与改名后的文件保持一致 */
+function fixPercentEncoded(text, convert) {
+  return text.replace(/(?:%[0-9A-Fa-f]{2}){2,}/g, (m) => {
+    try {
+      const d = decodeURIComponent(m);
+      const c = convert(d);
+      return c === d ? m : encodeURIComponent(c);
+    } catch { return m; }
+  });
+}
+
+function fixLangCodes(text, targetLang) {
+  return text.replace(/zh[-_](?:Hans|Hant|CN|TW|HK|MO|SG)\b/gi, targetLang);
+}
+
+/* EPUB 本质是 ZIP：逐个条目转换文本，二进制原样保留 */
+async function convertEpub(buf, { convert, lang }, onProgress, warn) {
+  let zip;
+  try { zip = await JSZip.loadAsync(buf); }
+  catch { throw new Error('无法解析：这似乎不是有效的 EPUB 文件'); }
+
+  if (zip.file('META-INF/encryption.xml')) {
+    warn('检测到加密信息（可能含 DRM），转换结果或无法打开');
+  }
+
+  const out = new JSZip();
+  const mime = zip.file('mimetype'); /* EPUB 规范要求 mimetype 为首个且不压缩的条目 */
+  if (mime) out.file('mimetype', await mime.async('string'), { compression: 'STORE' });
+
+  const entries = Object.values(zip.files).filter((e) => !e.dir && e.name !== 'mimetype');
+  let done = 0;
+  for (const entry of entries) {
+    /* 条目名同步简繁转换，保证与正文中的链接一致（不同繁体字简化后重名的情况极罕见，未作处理） */
+    const newName = convert(entry.name);
+    if (TEXT_EXT.test(entry.name)) {
+      let text = convert(await entry.async('string'));
+      text = fixPercentEncoded(text, convert);
+      text = fixLangCodes(text, lang);
+      out.file(newName, text);
+    } else {
+      out.file(newName, await entry.async('uint8array'));
+    }
+    done += 1;
+    onProgress(done / entries.length);
+    if (done % 4 === 0) await tick();
+  }
+  const blob = await out.generateAsync(
+    { type: 'blob', mimeType: 'application/epub+zip', compression: 'DEFLATE' },
+    (m) => onProgress(0.995 + 0.005 * (m.percent / 100))
+  );
+  return blob;
+}
+
+/* TXT：自动识别 UTF-8 / Big5 / GB18030 编码 */
+function decodeSmart(buf, preferBig5) {
+  try { return new TextDecoder('utf-8', { fatal: true }).decode(buf); } catch {}
+  const count = (s) => { let n = 0; for (const ch of s) if (ch === '\uFFFD') n += 1; return n; };
+  const b5 = new TextDecoder('big5').decode(buf);
+  const gb = new TextDecoder('gb18030').decode(buf);
+  const nb = count(b5), ng = count(gb);
+  if (nb === ng) return preferBig5 ? b5 : gb;
+  return nb < ng ? b5 : gb;
+}
+
+async function convertTxt(buf, { convert, tag }, onProgress) {
+  const text = decodeSmart(new Uint8Array(buf), tag === '简体');
+  const CHUNK = 200000; /* 分块转换，块边界落在换行处，避免拆断词语 */
+  let outStr = '', i = 0;
+  while (i < text.length) {
+    let end = Math.min(i + CHUNK, text.length);
+    if (end < text.length) {
+      const nl = text.lastIndexOf('\n', end);
+      if (nl > i) end = nl + 1;
+    }
+    outStr += convert(text.slice(i, end));
+    i = end;
+    onProgress(i / text.length);
+    await tick();
+  }
+  return new Blob(['\uFEFF' + outStr], { type: 'text/plain;charset=utf-8' });
+}
+
+/* ---------- 界面与队列 ---------- */
+const fmtSize = (n) => n < 1048576 ? (n / 1024).toFixed(1) + ' KB' : (n / 1048576).toFixed(2) + ' MB';
+
+function makeCard(file) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML =
+    '<div class="row"><span class="name"></span><span class="size"></span></div>' +
+    '<div class="bar"><i></i></div>' +
+    '<div class="status"><span class="msg">排队中…</span><span class="act"></span></div>';
+  card.querySelector('.name').textContent = file.name;
+  card.querySelector('.size').textContent = fmtSize(file.size);
+  $('#files').appendChild(card);
+  return {
+    bar: card.querySelector('.bar i'),
+    msg: card.querySelector('.msg'),
+    act: card.querySelector('.act'),
+    fail: (m) => { card.classList.add('err'); card.querySelector('.msg').textContent = m; },
+  };
+}
+
+let queue = Promise.resolve();
+
+async function processFile(file, scheme, autoDownload) {
+  const ui = makeCard(file);
+  const ext = (file.name.match(/\.([^.]+)$/) || [, ''])[1].toLowerCase();
+  const base = file.name.replace(/\.[^.]+$/, '');
+
+  if (ext !== 'epub' && ext !== 'txt') {
+    ui.fail(ext === 'mobi' || ext === 'azw3' || ext === 'azw' || ext === 'pdf'
+      ? '暂不支持 .' + ext + '，请先用 Calibre 转成 EPUB'
+      : '不支持的文件类型，请选择 .epub 或 .txt');
+    return;
+  }
+
+  try {
+    ui.msg.textContent = '读取中…';
+    const buf = await file.arrayBuffer();
+    const onProgress = (p) => {
+      ui.bar.style.width = Math.min(100, p * 100).toFixed(1) + '%';
+      ui.msg.textContent = '转换中 ' + Math.min(100, Math.round(p * 100)) + '%';
+    };
+    let warning = '';
+    const blob = ext === 'epub'
+      ? await convertEpub(buf, scheme, onProgress, (w) => { warning = w; })
+      : await convertTxt(buf, scheme, onProgress);
+
+    const outName = scheme.convert(base) + '（' + scheme.tag + '）.' + ext;
+    const url = URL.createObjectURL(blob);
+    ui.bar.style.width = '100%';
+    ui.msg.textContent = '完成 · ' + fmtSize(blob.size) + (warning ? ' · ' + warning : '');
+    const a = document.createElement('a');
+    a.className = 'dl';
+    a.href = url;
+    a.download = outName;
+    a.textContent = '下载 ' + scheme.tag + '版';
+    ui.act.appendChild(a);
+    if (autoDownload) a.click();
+  } catch (e) {
+    ui.fail(e && e.message ? e.message : '转换失败，请重试');
+  }
+}
+
+function handleFiles(list) {
+  if (!engineReady || !list || !list.length) return;
+  const files = [...list];
+  const scheme = currentScheme(); /* 以本批开始时选中的方案为准 */
+  const autoDownload = files.length === 1;
+  for (const f of files) {
+    queue = queue.then(() => processFile(f, scheme, autoDownload));
+  }
+}
+
+const drop = $('#drop');
+$('#picker').addEventListener('change', (e) => { handleFiles(e.target.files); e.target.value = ''; });
+['dragenter', 'dragover'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add('drag'); }));
+['dragleave', 'drop'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove('drag'); }));
+drop.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
+</script>
+</body>
+</html>
