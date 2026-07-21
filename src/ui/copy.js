@@ -36,27 +36,27 @@ const MOBI_READ_LIMITED =
 const PDF_READ_LIMITED =
   'PDF 里只记了文字的位置，没有章节信息，转出来的结构可能要你手动调一下；图片和排版不会保留，扫描版 PDF 处理不了。';
 const EPUB_SOFT_ENCRYPTED =
-  '书里检测到与版权保护相关的加密信息，转换出来的内容可能没法正常打开。';
+  '检测到与版权保护相关的加密信息，转换出来的内容可能没法正常打开。';
 
 export const COPY = {
   /* ================ 1. 首屏 ================ */
 
-  pageTitle: '书简 · 电子书格式转换',
+  pageTitle: '书简 · 电子书繁简转换 · 日语注音',
   pageDescription:
     '把电子书转换成你需要的格式，支持 EPUB、MOBI、PDF 等常见格式，也能转换繁简、给日文标音。全部处理都在你的设备本地完成，文件不会被上传。',
 
   // 首屏第一句：一句诗，大字细体（见 shell.html h1.poem 样式）。
-  heroTitle: '闲坐小窗读周易，不知春去几多时。',
+  heroTitle: '闲坐小窗读周易，\n不知春去几多时。',
 
   // 首屏描述随当前功能切换（app.js setMode 里改写 #heroLede 的 innerHTML）：
   // 繁简一侧讲格式转换与边界；日文一侧换一套面向"读原著攒生词"的说法，两边不同。
   ledeTsHtml:
-    '<b>书简</b>，把 EPUB、MOBI、AZW3、TXT、Markdown、PDF、DOCX，转成适合 Kindle、Kobo、Apple Books、掌阅、KOReader 阅读的 EPUB、MOBI、KEPUB、PDF、TXT。繁简互转、横竖排版，皆自动处理。只搬章节结构与文字，字体版式交给阅读器；扫描成图片的 PDF 暂时读不了。',
+    '<b>书简</b>，把 EPUB、MOBI、AZW3、TXT、PDF等格式 —— 转成适合 Kindle、Kobo、Apple Books。繁简互转、横竖排版，皆自动处理。',
   ledeFuriganaHtml:
-    '<b>书简</b>，为想在阅读里攒生词的你，把日文汉字逐个注上假名——遇到生字不必停下来查，顺着读就好，读着读着便记住了。可以全标，也可以只标生僻字；配合 EPUB / KEPUB 输出，带着假名进 Kindle、Kobo、Apple Books。多音字难免有出入，仅作参考。',
+    '<b>书简</b>，为想在阅读里攒生词的你而生。把日文汉字逐个注上假名 —— 可以全标，也可以只标生僻字；配合 EPUB / KEPUB 输出，带着假名进 Kindle、Kobo、Apple Books。多音字难免出入。',
 
   // 页脚小字（品牌 + 隐私承诺），见 shell.html #footerLine。
-  footerLine: '2026© 书简 · 零服务器存储 · 隐私优先',
+  footerLine: '© 2026 书简 · 零服务器存储 · 隐私优先',
 
   /* ================ 2. 转换方案 / 输出格式 ================ */
 
