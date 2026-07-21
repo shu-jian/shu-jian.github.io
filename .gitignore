@@ -1,0 +1,15 @@
+.DS_Store
+**/.DS_Store
+node_modules/
+
+# ───────────────────────────────────────────────────────────
+# 部署面 vs 工程面（2026-07-22 起，原生 ESM 多文件部署，无构建）
+#
+# 入库（= GitHub Pages / Cloudflare Pages 部署面）：
+#   index.html · src/** · styles/** · dict/*.dat.gz · LICENSE · README.md
+# 以下为工程物：留工作目录，不推送（副本备份在上层 ../工程/）。
+# ───────────────────────────────────────────────────────────
+CLAUDE.md
+.claude/
+docs/
+test/
