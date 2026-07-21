@@ -59,7 +59,7 @@ a{color:inherit}
 .topnote{font-size:12.5px;letter-spacing:.06em;color:rgba(247,242,230,.62);text-align:right}
 
 /* ── 纸页面板 ─────────────────────── */
-.sheet-wrap{position:relative;width:100%;max-width:760px}
+.sheet-wrap{position:relative;width:100%;max-width:760px;margin-top:60px}
 .slip{
   position:absolute;left:-64px;top:34px;width:46px;
   writing-mode:vertical-rl;
@@ -82,8 +82,16 @@ a{color:inherit}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.sheet{animation:none}}
 
-h1{font-family:var(--serif);font-size:clamp(24px,4.4vw,33px);font-weight:700;letter-spacing:.02em;line-height:1.45}
-.lede{margin-top:10px;color:var(--ink-soft);font-size:14.5px;max-width:56ch}
+/* 首屏第一句：一句诗，大字细体（Mac 上 Songti SC Light；细体重点在 font-weight） */
+h1.poem{
+  font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",var(--serif);
+  font-weight:300;
+  font-size:clamp(27px,4.9vw,45px);
+  letter-spacing:.12em;
+  line-height:1.75;
+  color:var(--ink);
+}
+.lede{margin-top:20px;color:var(--ink-soft);font-size:14.5px;line-height:1.85;max-width:58ch}
 .lede b{color:var(--ink);font-weight:600}
 
 /* ── 转换方案 / 输出格式 / 日语标音 ─────────────────────── */
@@ -107,6 +115,32 @@ h1{font-family:var(--serif);font-size:clamp(24px,4.4vw,33px);font-weight:700;let
 .output-notice{margin-top:10px;font-size:12.5px;color:var(--ink-soft)}
 .output-notice:empty{display:none}
 
+/* ── 功能选项（繁简转换 / 日文标音，横排二选一） ─── */
+.modes{
+  margin-top:24px;display:flex;gap:8px;flex-wrap:wrap;
+  border-bottom:1px solid var(--hairline);
+}
+.mode{
+  flex:1 1 180px;min-width:150px;
+  display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:left;
+  background:none;border:none;cursor:pointer;
+  padding:12px 14px 14px;margin-bottom:-1px;
+  border-bottom:2.5px solid transparent;color:var(--ink-soft);
+  transition:color .15s, border-color .15s;
+}
+.mode:hover{color:var(--ink)}
+.mode[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--seal)}
+.mode:focus-visible{outline:2px solid var(--seal);outline-offset:2px;border-radius:3px}
+.mode .mode-name{font-family:var(--serif);font-size:17px;font-weight:600;letter-spacing:.08em}
+.mode .mode-desc{font-size:12.5px;color:var(--ink-soft)}
+
+/* 按当前功能显示/隐藏对应选项字段（#sheet[data-active-mode] 由 app.js 切换） */
+.controls [data-mode]{display:none}
+#sheet[data-active-mode="ts"] .controls [data-mode="ts"]{display:flex}
+#sheet[data-active-mode="furigana"] .controls [data-mode="furigana"]{display:flex}
+/* 繁简的「转换方向」+「地区用词」并排成一组，一起换行、不被拆散 */
+.scheme-pair{gap:22px;flex-wrap:wrap;align-items:center}
+
 /* ── 拖放区 ──────────────────────── */
 .drop{
   margin-top:18px;display:block;cursor:pointer;
@@ -129,6 +163,34 @@ h1{font-family:var(--serif);font-size:clamp(24px,4.4vw,33px);font-weight:700;let
   font-family:var(--sans);font-size:12.5px;color:var(--seal);background:none;border:none;
   text-decoration:underline;cursor:pointer;padding:0;
 }
+
+/* ── 待转换列表 + 开始按钮 ──────────── */
+.pending{margin-top:20px}
+.pending-head{font-size:12.5px;color:var(--ink-soft);margin-bottom:8px;letter-spacing:.04em}
+.pending-list{display:flex;flex-direction:column;gap:8px}
+.chip{
+  display:flex;align-items:center;gap:12px;
+  background:var(--paper-soft);border:1px solid rgba(35,36,31,.16);border-radius:3px;
+  padding:9px 12px;
+}
+.chip .cname{font-family:var(--serif);font-size:14px;word-break:break-all}
+.chip .csize{font-family:var(--mono);font-size:11px;color:var(--ink-soft);flex:none;margin-left:auto}
+.chip .cx{
+  flex:none;background:none;border:none;cursor:pointer;color:var(--ink-soft);
+  font-size:17px;line-height:1;padding:2px 7px;border-radius:3px;
+}
+.chip .cx:hover{color:var(--seal);background:rgba(175,58,42,.08)}
+.chip .cx:focus-visible{outline:2px solid var(--seal);outline-offset:1px}
+
+.actions{margin-top:22px}
+.start{
+  font-family:var(--serif);font-size:16px;font-weight:600;letter-spacing:.12em;
+  background:var(--seal);color:#FBF3E4;border:none;border-radius:4px;
+  padding:13px 32px;cursor:pointer;transition:background .15s;
+}
+.start:hover{background:var(--seal-deep)}
+.start:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.start:disabled{background:rgba(35,36,31,.2);color:rgba(247,242,230,.8);cursor:not-allowed}
 
 /* ── 文件列表 ─────────────────────── */
 .files{margin-top:22px;display:flex;flex-direction:column;gap:12px}
@@ -162,48 +224,54 @@ h1{font-family:var(--serif);font-size:clamp(24px,4.4vw,33px);font-weight:700;let
 .foot a{color:rgba(247,242,230,.78);text-underline-offset:3px}
 
 @media (max-width:880px){
-  .slip{display:none}
   .sheet{padding:32px 24px 30px}
-  .topbar{padding-top:20px;padding-bottom:24px}
-  .topnote{display:none}
+  .sheet-wrap{margin-top:34px}
 }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <a class="brand" href="#" onclick="return false">
-    <span class="sealpair" aria-hidden="true">
-      <span class="stamp fan">繁</span><span class="arrow">→</span><span class="stamp jian">简</span>
-    </span>
-    <span class="wordmark" id="brand"></span>
-  </a>
-  <div class="topnote" id="topnote"></div>
-</header>
-
 <main class="sheet-wrap">
-  <div class="slip" aria-hidden="true"><span id="slipMain"></span><small id="slipSmall"></small></div>
+  <div class="sheet" id="sheet" data-active-mode="ts">
+    <h1 id="heroTitle" class="poem"></h1>
 
-  <div class="sheet">
-    <h1 id="heroTitle"></h1>
+    <div class="modes" role="tablist" aria-label="转换功能">
+      <button type="button" class="mode" id="modeTs" role="tab" aria-selected="true">
+        <span class="mode-name" id="modeTsName"></span>
+      </button>
+      <button type="button" class="mode" id="modeFuri" role="tab" aria-selected="false">
+        <span class="mode-name" id="modeFuriName"></span>
+      </button>
+    </div>
+
     <p class="lede" id="heroLede"></p>
 
     <div class="controls">
-      <div class="scheme">
-        <label for="scheme" id="schemeLabel"></label>
-        <select id="scheme"></select>
+      <div class="scheme-pair" data-mode="ts">
+        <div class="scheme">
+          <label for="tsDirection" id="directionLabel"></label>
+          <select id="tsDirection"></select>
+        </div>
+        <div class="scheme">
+          <label for="tsRegion" id="regionLabel"></label>
+          <select id="tsRegion"></select>
+        </div>
+      </div>
+      <div class="scheme" data-mode="furigana">
+        <label for="annot" id="annotLabel"></label>
+        <select id="annot"></select>
       </div>
       <div class="scheme">
         <label for="outputFormat" id="outputLabel"></label>
         <select id="outputFormat"></select>
       </div>
       <div class="scheme">
-        <label for="furigana" id="furiganaLabel"></label>
-        <select id="furigana"></select>
+        <label for="writingDir" id="writingDirLabel"></label>
+        <select id="writingDir"></select>
       </div>
     </div>
+    <p class="output-notice" id="modeNotice"></p>
     <p class="output-notice" id="outputNotice"></p>
-    <p class="output-notice" id="furiganaNotice"></p>
 
     <label class="drop" id="drop">
       <input type="file" id="picker" accept=".txt,.md,.zip,.epub,.docx,.pdf,.mobi,.azw3,.azw" multiple>
@@ -213,13 +281,21 @@ h1{font-family:var(--serif);font-size:clamp(24px,4.4vw,33px);font-weight:700;let
 
     <div class="engine" id="engine"><span class="dot"></span><span id="engineText"></span></div>
 
+    <div class="pending" id="pending" hidden>
+      <div class="pending-head" id="pendingHead"></div>
+      <div class="pending-list" id="pendingList"></div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="start" id="startBtn" disabled></button>
+    </div>
+
     <div class="files" id="files" aria-live="polite"></div>
   </div>
 </main>
 
 <footer class="foot">
-  <span id="footerCredit"></span><br>
-  <span id="footerUnsupported"></span>
+  <span id="footerLine"></span>
 </footer>
 
 <script type="module">
@@ -704,10 +780,12 @@ SJ.transforms.opencc = (function () {
  */
 const SCHEMES = Object.freeze({
   t2cn: Object.freeze({ from: 't', to: 'cn' }), // 繁体 → 简体（通用）
-  tw2cn: Object.freeze({ from: 'tw', to: 'cn' }), // 台湾正体 → 简体
+  tw2cn: Object.freeze({ from: 'tw', to: 'cn' }), // 台湾正体 → 简体（仅字形）
   twp2cn: Object.freeze({ from: 'twp', to: 'cn' }), // 台湾正体 → 简体（含用词转换，如 滑鼠→鼠标）
   hk2cn: Object.freeze({ from: 'hk', to: 'cn' }), // 香港繁体 → 简体
-  cn2tw: Object.freeze({ from: 'cn', to: 'tw' }), // 简体 → 台湾正体
+  cn2t: Object.freeze({ from: 'cn', to: 't' }), // 简体 → 繁体（通用）
+  cn2tw: Object.freeze({ from: 'cn', to: 'tw' }), // 简体 → 台湾正体（仅字形）
+  cn2twp: Object.freeze({ from: 'cn', to: 'twp' }), // 简体 → 台湾正体（含用词转换，如 鼠标→滑鼠）
   cn2hk: Object.freeze({ from: 'cn', to: 'hk' }), // 简体 → 香港繁体
 });
 
@@ -6433,37 +6511,57 @@ const EPUB_SOFT_ENCRYPTED =
   '书里检测到与版权保护相关的加密信息，转换出来的内容可能没法正常打开。';
 
 const COPY = {
-  /* ================ 1. 品牌 / 首屏 ================ */
+  /* ================ 1. 首屏 ================ */
 
   pageTitle: '书简 · 电子书格式转换',
   pageDescription:
-    '把电子书转换成你需要的格式，支持 EPUB、MOBI、PDF 等常见格式，也能转换繁简。全部处理都在你的设备本地完成，文件不会被上传。',
+    '把电子书转换成你需要的格式，支持 EPUB、MOBI、PDF 等常见格式，也能转换繁简、给日文标音。全部处理都在你的设备本地完成，文件不会被上传。',
 
-  brand: '书简',
-  topnote: '本地转换 · 文件不出本机',
+  // 首屏第一句：一句诗，大字细体（见 shell.html h1.poem 样式）。
+  heroTitle: '闲坐小窗读周易，不知春去几多时。',
 
-  slipMain: '繁體轉簡體',
-  slipSmall: '檔案不出本機',
+  // 首屏描述随当前功能切换（app.js setMode 里改写 #heroLede 的 innerHTML）：
+  // 繁简一侧讲格式转换与边界；日文一侧换一套面向"读原著攒生词"的说法，两边不同。
+  ledeTsHtml:
+    '<b>书简</b>，把 EPUB、MOBI、AZW3、TXT、Markdown、PDF、DOCX，转成适合 Kindle、Kobo、Apple Books、掌阅、KOReader 阅读的 EPUB、MOBI、KEPUB、PDF、TXT。繁简互转、横竖排版，皆自动处理。只搬章节结构与文字，字体版式交给阅读器；扫描成图片的 PDF 暂时读不了。',
+  ledeFuriganaHtml:
+    '<b>书简</b>，为想在阅读里攒生词的你，把日文汉字逐个注上假名——遇到生字不必停下来查，顺着读就好，读着读着便记住了。可以全标，也可以只标生僻字；配合 EPUB / KEPUB 输出，带着假名进 Kindle、Kobo、Apple Books。多音字难免有出入，仅作参考。',
 
-  heroTitle: '把电子书，变成你想要的样子。',
-  heroLedeHtml:
-    '认识 <b>EPUB</b>、<b>MOBI</b>、<b>PDF</b> 等常见格式，可以转换格式，也可以顺手转换繁简——按词转换，不是逐字替换，「頭髮」会变「头发」，「乾坤」还是「乾坤」。<b>文件不会离开你的电脑</b>，转换全程都在你的浏览器里完成。',
+  // 页脚小字（品牌 + 隐私承诺），见 shell.html #footerLine。
+  footerLine: '2026© 书简 · 零服务器存储 · 隐私优先',
 
   /* ================ 2. 转换方案 / 输出格式 ================ */
 
-  schemeLabel: '转换方案',
-  // value 对齐 src/transforms/opencc.js 的 SCHEME_KEYS，不能改；
-  // tag 用于生成下载文件名后缀（如"（简体）"），tag 为空则文件名不加后缀
-  schemeOptions: [
-    { value: 't2cn', label: '繁体 → 简体（通用）', tag: '简体' },
-    { value: 'tw2cn', label: '台湾正体 → 简体', tag: '简体' },
-    { value: 'twp2cn', label: '台湾正体 → 简体（含用词：滑鼠→鼠标）', tag: '简体' },
-    { value: 'hk2cn', label: '香港繁体 → 简体', tag: '简体' },
-    { value: 'cn2tw', label: '简体 → 台湾正体', tag: '繁體' },
-    { value: 'cn2hk', label: '简体 → 香港繁体', tag: '繁體' },
-    // 格式互转不该被迫改变字形，"不转换"是和六个真实方案平级的合法选项
-    { value: 'none', label: '不转换', tag: '' },
+  // 繁简转换拆成两个并排的独立选项：转换方向 + 地区用词。app.js 的 tsScheme()
+  // 把这对取值合成 opencc 的 scheme key（见 SCHEMES）。这样"要不要转、往哪个
+  // 方向转"和"按哪个地区的用字用词习惯"互不纠缠，各自一个下拉。
+
+  // 转换方向。value 见 app.js tsScheme()：t2s 繁→简 / s2t 简→繁 / none 不转换。
+  directionLabel: '转换方向',
+  directionOptions: [
+    { value: 't2s', label: '繁体 → 简体' },
+    { value: 's2t', label: '简体 → 繁体' },
+    // 格式互转不该被迫改变字形，"不转换"是和两个方向平级的合法选项
+    { value: 'none', label: '不转换' },
   ],
+
+  // 地区用词（按哪个地方的用字与用词习惯）。value 见 app.js tsScheme()。
+  // 「不转换」方向下这个选项无意义，app.js 会把它禁用。
+  regionLabel: '地区用词',
+  regionOptions: [
+    // generic＝只转字形、不换措辞（opencc 通用档 t2cn/cn2t）：網際網路 → 网际网路，
+    // 词还是那个词。与"台湾用词"（會把它换成 互联网）区分开。
+    { value: 'generic', label: '保留原文措辞（網際網路 → 网际网路）' },
+    { value: 'tw', label: '台湾用词（網際網路 → 互联网、滑鼠 → 鼠标）' },
+    { value: 'hk', label: '香港' },
+  ],
+
+  // scheme key → 下载文件名后缀（如"（简体）"）。空串则文件名不加后缀。
+  schemeTags: {
+    t2cn: '简体', tw2cn: '简体', twp2cn: '简体', hk2cn: '简体',
+    cn2t: '繁體', cn2tw: '繁體', cn2twp: '繁體', cn2hk: '繁體',
+    none: '',
+  },
 
   outputLabel: '输出格式',
   // value 对齐 src/ui/app.js 的 WRITERS 表，不能改。
@@ -6477,16 +6575,46 @@ const COPY = {
     { value: 'pdf', label: 'PDF（打印生成）' },
   ],
 
-  // 日语标音：与繁简转换正交的独立选项（BOUNDARIES §3——日语书繁简固定不转换，
-  // 但给汉字标假名是另一回事，单独成一档）。常驻控件行、默认「不标注」；
-  // 只对日语书 + EPUB/KEPUB 输出真正生效（见 app.js applyFurigana）。
-  // value：off/all/rare，对齐 applyFurigana 的 mode 参数。
-  furiganaLabel: '日语标音',
-  furiganaOptions: [
-    { value: 'off', label: '不标注' },
+  // 排版方向（两个功能都显示）。value 对齐 app.js：'keep' 不改动原书，其余写入
+  // meta.writingMode（ir.js 只认 'horizontal-tb' / 'vertical-rl'）。竖排只在
+  // EPUB / KEPUB / PDF 里有效，TXT / MOBI 不带方向。
+  writingDirLabel: '排版方向',
+  writingDirOptions: [
+    { value: 'keep', label: '保持原书' },
+    { value: 'horizontal-tb', label: '横排' },
+    { value: 'vertical-rl', label: '竖排（直排）' },
+  ],
+  writingDirNotice: (dir, fmt) =>
+    dir === 'vertical-rl' && fmt !== 'epub' && fmt !== 'kepub' && fmt !== 'pdf'
+      ? '竖排只在 EPUB / KEPUB / PDF 里生效，这个输出格式不带排版方向。'
+      : '',
+
+  /* ================ 顶层功能：繁简转换 / 日文标音（横排二选一） ================ */
+
+  // 两个功能是并列的两回事：繁简转换是字形转换（走 opencc），日文标音是给日文
+  // 汉字注假名（走 furigana）。用户选其一，界面只显示该功能的选项。tab 只留名字，
+  // 各自的说明交给随功能切换的首屏描述（ledeTsHtml / ledeFuriganaHtml）。
+  modeTsName: '繁简转换',
+  modeFuriName: '日文标音',
+
+  // 日文标音的标注范围（功能=日文标音 时显示）。value 对齐 applyFurigana 的 mode。
+  annotLabel: '标注范围',
+  annotOptions: [
     { value: 'all', label: '全部汉字' },
     { value: 'rare', label: '只标生僻字' },
   ],
+
+  // 当前功能对应的即时说明（日文标音时说清适用范围、首次要下载词典这两件事）。
+  modeNotice: (mode) =>
+    mode === 'furigana'
+      ? '只对日语书有用，输出请选 EPUB 或 KEPUB。第一次用要下载一份日语词典，十七兆左右，只下载一次；多音字可能标错，没法保证全对。'
+      : '',
+
+  /* ================ 开始转换 / 待转换列表 ================ */
+
+  startLabel: '开始转换',
+  pendingTitle: (n) => `待转换 · ${n} 个文件`,
+  removeLabel: '移除',
 
   /* ================ 3. 拖放区 ================ */
 
@@ -6585,14 +6713,7 @@ const COPY = {
   // 这个只在勾选假名标注时才适用的次要原因
   jaSchemeForced: '这本书是日语，繁简转换认不好日文汉字的写法，这里就先不转换了。',
 
-  /* ================ 日语标音（独立选项，仅日语书 + EPUB/KEPUB 输出时生效） ================ */
-
-  // #furigana 是常驻控件（中文书也看得见），所以选了非「不标注」时给一句即时提示：
-  // 说清它只对日语书生效、首次要下载词典、以及不保证全对。选「不标注」时返回空串折叠掉。
-  furiganaControlNotice: (mode) =>
-    mode && mode !== 'off'
-      ? '只对日语书（输出 EPUB / KEPUB）有用。第一次用要下载一份日语词典，十七兆左右，只用下载一次；多音字可能标错，没法保证全对。'
-      : '',
+  /* ================ 日语标音（功能=日文标音，仅日语书 + EPUB/KEPUB 输出时生效） ================ */
 
   // 选了标音、书也确实是日语，但输出格式带不了假名（TXT / MOBI / PDF）时的说明
   furiganaFormatSkipped: '想标假名的话，输出格式得选 EPUB 或 KEPUB；这次的格式带不了假名，就先没标。',
@@ -6665,16 +6786,8 @@ const COPY = {
   // 保证用户永远看到的是一句完整的话，不是一个技术代号
   warningFallback: '转换过程中有一处细节没能完全还原，不影响其余内容。',
 
-  /* ================ 8. 页脚 / 关于 ================ */
-
-  // 首屏不放技术细节：这里只留一句不点名的说明。具体的开源项目名字与许可证
-  // 这份文件放不了（见文件顶部说明），交给代码仓库自己承载
-  footerCreditHtml: '这是一份开源的静态网页，代码公开，可以部署到任何静态网站空间，也可以下载下来自己保存。',
-
-  // 曾经用来提示"认识但暂不支持"的读入格式；integration_ui_03 后已经没有
-  // 可以诚实列出的格式，置空——宁可这行不显示内容，也不留一个已经不成立
-  // 的断言在页面上。若未来又出现新的"认识但暂不支持"格式，回填字符串即可
-  footerUnsupported: '',
+  /* ================ 8. 页脚 ================ */
+  // 页脚只留一行小字（品牌 + 隐私），见首屏区的 footerLine。
 };
 
 return { COPY };
@@ -6729,19 +6842,18 @@ document.title = COPY.pageTitle;
 const descMeta = document.querySelector('meta[name="description"]');
 if (descMeta) descMeta.setAttribute('content', COPY.pageDescription);
 
-$('#brand').textContent = COPY.brand;
-$('#topnote').textContent = COPY.topnote;
-$('#slipMain').textContent = COPY.slipMain;
-$('#slipSmall').textContent = COPY.slipSmall;
 $('#heroTitle').textContent = COPY.heroTitle;
-$('#heroLede').innerHTML = COPY.heroLedeHtml;
-$('#schemeLabel').textContent = COPY.schemeLabel;
+$('#modeTsName').textContent = COPY.modeTsName;
+$('#modeFuriName').textContent = COPY.modeFuriName;
+$('#directionLabel').textContent = COPY.directionLabel;
+$('#regionLabel').textContent = COPY.regionLabel;
+$('#annotLabel').textContent = COPY.annotLabel;
 $('#outputLabel').textContent = COPY.outputLabel;
-$('#furiganaLabel').textContent = COPY.furiganaLabel;
+$('#writingDirLabel').textContent = COPY.writingDirLabel;
 $('#dropMain').textContent = COPY.dropMain;
 $('#dropSub').textContent = COPY.dropSub;
-$('#footerCredit').innerHTML = COPY.footerCreditHtml;
-$('#footerUnsupported').textContent = COPY.footerUnsupported;
+$('#startBtn').textContent = COPY.startLabel;
+$('#footerLine').textContent = COPY.footerLine;
 
 function fillSelect(select, options, { value, label }) {
   select.innerHTML = '';
@@ -6752,30 +6864,61 @@ function fillSelect(select, options, { value, label }) {
     select.appendChild(el);
   }
 }
-fillSelect($('#scheme'), COPY.schemeOptions, { value: 'value', label: 'label' });
+fillSelect($('#tsDirection'), COPY.directionOptions, { value: 'value', label: 'label' });
+fillSelect($('#tsRegion'), COPY.regionOptions, { value: 'value', label: 'label' });
+fillSelect($('#annot'), COPY.annotOptions, { value: 'value', label: 'label' });
+
+/* 转换方向选「不转换」时，地区用词无意义——禁用它（灰掉但保留选中值）。 */
+function updateRegionEnabled() {
+  $('#tsRegion').disabled = $('#tsDirection').value === 'none';
+}
+updateRegionEnabled();
+$('#tsDirection').addEventListener('change', updateRegionEnabled);
 fillSelect($('#outputFormat'), COPY.outputOptions, { value: 'value', label: 'label' });
-fillSelect($('#furigana'), COPY.furiganaOptions, { value: 'value', label: 'label' });
+fillSelect($('#writingDir'), COPY.writingDirOptions, { value: 'value', label: 'label' });
 
-/* integration_ui_04：接线 COPY.outputFormatNotice(fmt)——此前 outputFormat
- * 的 <select> 变化时没有任何即时提示，MOBI/PDF 输出的效果限制只在转换完成
- * 后随结果展示。R5 要求"效果有限的…在选中时给一句提醒"，这里补上：change
- * 时与页面初始化时各调一次（初始化时默认选中 EPUB，outputFormatNotice 对
- * 非 mobi/pdf 返回空字符串，所以首屏不会平白出现一行提示）。 */
+/* 顶层功能：繁简转换（'ts'）/ 日文标音（'furigana'）二选一。切换只改
+ * #sheet[data-active-mode]（CSS 据此显示/隐藏对应选项字段）与两个 tab 的
+ * aria-selected，再刷新一次说明文案。当前功能由 readOptions() 读取。 */
+const sheetEl = $('#sheet');
+const modeNoticeEl = $('#modeNotice');
 const outputNoticeEl = $('#outputNotice');
-function updateOutputNotice() {
-  if (outputNoticeEl) outputNoticeEl.textContent = COPY.outputFormatNotice($('#outputFormat').value);
-}
-updateOutputNotice();
-$('#outputFormat').addEventListener('change', updateOutputNotice);
+function currentMode() { return sheetEl.dataset.activeMode; }
 
-/* 日语标音（#furigana）是常驻控件，选非 off 时给一句"只对日语书生效 + 首次需
- * 下载词典"的即时提示（复用 .output-notice 的 :empty 折叠，off 时不占行）。 */
-const furiganaNoticeEl = $('#furiganaNotice');
-function updateFuriganaNotice() {
-  if (furiganaNoticeEl) furiganaNoticeEl.textContent = COPY.furiganaControlNotice($('#furigana').value);
+/* 输出格式 / 排版方向的即时提示合并到一行（复用 .output-notice 的 :empty 折叠）：
+ * MOBI/PDF 输出的限制 + 竖排在不支持方向的格式上不生效，各一句、用 · 连接。 */
+function updateOutputNotice() {
+  if (!outputNoticeEl) return;
+  const fmt = $('#outputFormat').value;
+  const dir = $('#writingDir').value;
+  const parts = [];
+  const f = COPY.outputFormatNotice(fmt);
+  if (f) parts.push(f);
+  const d = COPY.writingDirNotice(dir, fmt);
+  if (d) parts.push(d);
+  outputNoticeEl.textContent = parts.join(' · ');
 }
-updateFuriganaNotice();
-$('#furigana').addEventListener('change', updateFuriganaNotice);
+function updateModeNotice() {
+  if (modeNoticeEl) modeNoticeEl.textContent = COPY.modeNotice(currentMode());
+}
+/* 首屏描述随功能切换：繁简一侧讲格式转换，日文一侧换成面向"读原著攒生词"的说法。 */
+const heroLedeEl = $('#heroLede');
+function updateHeroLede(mode) {
+  if (heroLedeEl) heroLedeEl.innerHTML = mode === 'furigana' ? COPY.ledeFuriganaHtml : COPY.ledeTsHtml;
+}
+function setMode(mode) {
+  sheetEl.dataset.activeMode = mode;
+  $('#modeTs').setAttribute('aria-selected', String(mode === 'ts'));
+  $('#modeFuri').setAttribute('aria-selected', String(mode === 'furigana'));
+  updateHeroLede(mode);
+  updateModeNotice();
+  updateOutputNotice();
+}
+$('#modeTs').addEventListener('click', () => setMode('ts'));
+$('#modeFuri').addEventListener('click', () => setMode('furigana'));
+$('#outputFormat').addEventListener('change', updateOutputNotice);
+$('#writingDir').addEventListener('change', updateOutputNotice);
+setMode('ts');
 
 /* ---------- 依赖加载（多 CDN 依次回退，沿用现有 loadFrom 模式） ---------- */
 
@@ -6816,7 +6959,21 @@ const CDN_KUROMOJI = [
   'https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/build/kuromoji.js',
   'https://unpkg.com/kuromoji@0.1.2/build/kuromoji.js',
 ];
+/* dicPath 是 IPADIC 词典分片所在目录的前缀，kuromoji 会在其后逐个拼接
+ * base.dat.gz / check.dat.gz 等 12 个文件名去取。
+ *
+ * 顺序＝首选同源相对路径 'dict/'（词典随站点部署，见仓库根 dict/），CDN 只作
+ * 离线兜底。这个顺序不是偏好，是正确性使然——kuromoji 0.1.2 用 path.join(dicPath,
+ * 文件名) 拼 URL，path.join 会把绝对地址里 `协议://` 的双斜杠归一成单斜杠
+ * （`https://cdn…` → `https:/cdn…`）。而当页面本身就跑在同协议下（线上是 https）时，
+ * 浏览器把 `https:/cdn…` 判成"与本页同协议的相对地址"，解析成
+ * `https://本站/cdn…`——于是每个词典文件都 404（这正是线上日语标音卡死的真因；
+ * 离线 file:// 页面协议与 https 不同，反而能正确解析，所以本地双击是好的）。
+ * 无协议的相对前缀 'dict/' 不含双斜杠，path.join 原样保留，解析到本站 dict/ 目录，
+ * 在任何页面协议下都正确。CDN 兜底仅在离线 file:// 场景真正可用（同上原因），
+ * 线上永远走 'dict/'。 */
 const KUROMOJI_DICT_PATHS = [
+  'dict/',
   'https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/',
   'https://unpkg.com/kuromoji@0.1.2/dict/',
 ];
@@ -6848,6 +7005,7 @@ async function loadEngines() {
     box.classList.add('ready');
     text.textContent = COPY.engineReady;
     drop.classList.remove('disabled');
+    updateStartBtn(); // 引擎就绪后，若已有待转换文件则解锁「开始转换」
   } catch (e) {
     box.classList.add('error');
     text.innerHTML = COPY.engineErrorHtml;
@@ -6855,7 +7013,7 @@ async function loadEngines() {
     if (retryBtn) retryBtn.addEventListener('click', loadEngines);
   }
 }
-loadEngines();
+// 调用点在文件末尾（loadEngines 成功分支会调 updateStartBtn，须等其定义就绪）。
 
 let mammothReady = false;
 let mammothLoading = null;
@@ -7036,8 +7194,25 @@ function outputMime(fmt) {
   return 'application/epub+zip';
 }
 function schemeTag(schemeValue) {
-  const opt = COPY.schemeOptions.find((o) => o.value === schemeValue);
-  return opt ? opt.tag : '';
+  return COPY.schemeTags[schemeValue] || '';
+}
+
+/**
+ * 把「转换方向」+「地区用词」两个并排选项合成 opencc 的 scheme key（见
+ * src/transforms/opencc.js SCHEMES）。方向选「不转换」时地区被忽略，恒为 none。
+ * 台湾一档用带用词转换的档位（twp：滑鼠 ↔ 鼠标），贴合「地区用词」的语义；
+ * 香港与通用无独立用词档，走字形档（hk / t / cn）。
+ * @param {string} direction 't2s' | 's2t' | 'none'
+ * @param {string} region    'generic' | 'tw' | 'hk'
+ * @returns {string} SCHEME_KEYS 之一
+ */
+function tsScheme(direction, region) {
+  if (direction === 'none') return 'none';
+  if (direction === 't2s') {
+    return region === 'tw' ? 'twp2cn' : region === 'hk' ? 'hk2cn' : 't2cn';
+  }
+  // direction === 's2t'
+  return region === 'tw' ? 'cn2twp' : region === 'hk' ? 'cn2hk' : 'cn2t';
 }
 
 /**
@@ -7078,6 +7253,18 @@ function effectiveSchemeFor(book, scheme) {
   return isJaBook(book) ? 'none' : scheme;
 }
 
+/**
+ * 用户选定的排版方向（#writingDir）覆盖到 meta.writingMode。
+ * 'keep' → 保持原书方向（不动）；其余值（'horizontal-tb'/'vertical-rl'）写入
+ * meta.writingMode——ir.js 只认这两个值，epub/kepub/pdf writer 据此产出横排或
+ * 竖排；txt/mobi 不带方向，写了也无副作用（writer 直接忽略 meta.writingMode）。
+ * 纯函数：只浅拷 meta，不改动入参 book 的其它字段。
+ */
+function applyWritingMode(book, dir) {
+  if (!dir || dir === 'keep') return book;
+  return { ...book, meta: { ...book.meta, writingMode: dir } };
+}
+
 /** mobi 输出的两项已知能力降级（src/writers/mobi.js 头部注释："这两项都需要
  *  提示用户"）：ruby 注音剥离成纯文字、notes 降级为书末普通区块。这里做检测，
  *  文案落在 copy.js 的 mobiRubyDropped / mobiNotesAtEnd。 */
@@ -7092,16 +7279,18 @@ function mobiOutputNotes(book) {
 }
 
 /**
- * 日语标音（顶层常驻选项 #furigana，与繁简转换正交——BOUNDARIES §3）。
+ * 日语标音（顶层功能「日文标音」，与「繁简转换」并列二选一——BOUNDARIES §3）。
+ * mode 由 readOptions() 给出：功能=日文标音 时取 #annot（'all' 全部汉字 /
+ * 'rare' 只标生僻字），功能=繁简转换 时恒为 'off'。
  * 只在三者同时成立时才真正标注，缺一即原样返回：
- *   (a) 用户把 #furigana 选成非 'off'（mode='all' 全部汉字 / 'rare' 只标生僻字）；
+ *   (a) mode 非 'off'（即当前功能是日文标音）；
  *   (b) 书是日语（isJaBook）；
  *   (c) 输出格式能承载 ruby（epub/kepub）——TXT 载不了、MOBI 会剥掉、PDF 走
  *       打印路径不额外保证，这三种即便选了标音也跳过，并留一句 note 说明。
  * 词典按需加载（~17MB，ensureFurigana 里做多源回退与阶段提示）；加载失败不
  * 阻断本书转换（R4 边界原文："词典加载失败给人话错误，不阻塞其他功能"）——
  * 吞掉错误变成一条 note 随完成状态展示，照常往下走 opencc → write，不 throw。
- * @param {string} mode #furigana 的取值：'off' | 'all' | 'rare'
+ * @param {string} mode 标注范围：'off'（不标） | 'all' | 'rare'
  * @returns {Promise<{book: object, notes: string[]}>}
  */
 async function applyFurigana(ui, book, outputFormat, mode) {
@@ -7202,7 +7391,7 @@ function presentOutput(ui, { outBytes, outputFormat, baseName, tag, extraNotes }
 
 /** 跑完 read → furigana(可选) → opencc → write → 下载链接，全流程不抛出
  *  （内部兜底为 ui.fail）。 */
-async function runPipeline(ui, { ext, buf, filename, scheme, outputFormat, furiganaMode, autoDownload }) {
+async function runPipeline(ui, { ext, buf, filename, scheme, outputFormat, furiganaMode, writingDir, autoDownload }) {
   try {
     ui.msg.textContent = COPY.reading;
     const reader = READERS[ext];
@@ -7225,6 +7414,7 @@ async function runPipeline(ui, { ext, buf, filename, scheme, outputFormat, furig
     const effectiveScheme = effectiveSchemeFor(book, scheme);
     const { opencc } = SJ.transforms.opencc;
     book = await opencc(book, { scheme: effectiveScheme });
+    book = applyWritingMode(book, writingDir);
 
     const onProgress = (p) => {
       ui.bar.style.width = Math.min(100, p * 100).toFixed(1) + '%';
@@ -7254,7 +7444,7 @@ async function runPipeline(ui, { ext, buf, filename, scheme, outputFormat, furig
   }
 }
 
-async function processZip(file, scheme, outputFormat, furiganaMode, autoDownload) {
+async function processZip(file, { scheme, outputFormat, furiganaMode, writingDir }, autoDownload) {
   const ui = makeCard(file.name);
   ui.sizeEl.textContent = fmtSize(file.size);
   try {
@@ -7274,7 +7464,8 @@ async function processZip(file, scheme, outputFormat, furiganaMode, autoDownload
 
         const effectiveScheme = effectiveSchemeFor(book, scheme);
         const { opencc } = SJ.transforms.opencc;
-        const converted = await opencc(book, { scheme: effectiveScheme });
+        let converted = await opencc(book, { scheme: effectiveScheme });
+        converted = applyWritingMode(converted, writingDir);
 
         const onProgress = (p) => {
           subUi.bar.style.width = Math.min(100, p * 100).toFixed(1) + '%';
@@ -7307,11 +7498,11 @@ async function processZip(file, scheme, outputFormat, furiganaMode, autoDownload
 
 let queue = Promise.resolve();
 
-async function processFile(file, scheme, outputFormat, furiganaMode, autoDownload) {
+async function processFile(file, opts, autoDownload) {
   const ext = (file.name.match(/\.([^.]+)$/) || [, ''])[1].toLowerCase();
 
   if (ext === 'zip') {
-    await processZip(file, scheme, outputFormat, furiganaMode, autoDownload);
+    await processZip(file, opts, autoDownload);
     return;
   }
 
@@ -7324,26 +7515,84 @@ async function processFile(file, scheme, outputFormat, furiganaMode, autoDownloa
   }
 
   const buf = new Uint8Array(await file.arrayBuffer());
-  await runPipeline(ui, { ext, buf, filename: file.name, scheme, outputFormat, furiganaMode, autoDownload });
+  await runPipeline(ui, { ext, buf, filename: file.name, ...opts, autoDownload });
 }
 
-function handleFiles(list) {
+/* ---------- 待转换队列：加文件不再自动开跑，等用户按「开始转换」 ---------- */
+
+let pendingId = 0;
+const pending = new Map(); // id → File，保插入顺序，供逐个移除
+const pendingBox = $('#pending');
+const pendingHead = $('#pendingHead');
+const pendingList = $('#pendingList');
+const startBtn = $('#startBtn');
+
+function updateStartBtn() {
+  startBtn.disabled = !engineReady || pending.size === 0;
+}
+
+function renderPending() {
+  pendingList.innerHTML = '';
+  pendingBox.hidden = pending.size === 0;
+  if (pending.size > 0) {
+    pendingHead.textContent = COPY.pendingTitle(pending.size);
+    for (const [id, file] of pending) {
+      const chip = document.createElement('div');
+      chip.className = 'chip';
+      chip.innerHTML = '<span class="cname"></span><span class="csize"></span><button type="button" class="cx"></button>';
+      chip.querySelector('.cname').textContent = file.name;
+      chip.querySelector('.csize').textContent = fmtSize(file.size);
+      const x = chip.querySelector('.cx');
+      x.textContent = '×';
+      x.setAttribute('aria-label', COPY.removeLabel);
+      x.addEventListener('click', () => { pending.delete(id); renderPending(); });
+      pendingList.appendChild(chip);
+    }
+  }
+  updateStartBtn();
+}
+
+/** 把选中/拖入的文件加入待转换列表，不立即处理（引擎未就绪时拖放区被禁用，
+ *  正常到不了这里；仍做一层守卫）。 */
+function addPending(list) {
   if (!engineReady || !list || !list.length) return;
-  const files = [...list];
-  const scheme = $('#scheme').value;
+  for (const f of [...list]) pending.set(++pendingId, f);
+  renderPending();
+}
+
+/** 读当前功能与选项，产出 runPipeline 需要的一组参数。
+ *  繁简转换：方向(#tsDirection)+地区(#tsRegion) 合成 scheme，不标音；
+ *  日文标音：不转繁简（'none'），标音范围用 #annot。 */
+function readOptions() {
   const outputFormat = $('#outputFormat').value;
-  const furiganaMode = $('#furigana').value;
+  const writingDir = $('#writingDir').value;
+  if (currentMode() === 'furigana') {
+    return { scheme: 'none', furiganaMode: $('#annot').value, outputFormat, writingDir };
+  }
+  const scheme = tsScheme($('#tsDirection').value, $('#tsRegion').value);
+  return { scheme, furiganaMode: 'off', outputFormat, writingDir };
+}
+
+startBtn.addEventListener('click', () => {
+  if (!engineReady || pending.size === 0) return;
+  const opts = readOptions();
+  const files = [...pending.values()];
+  pending.clear();
+  renderPending();
   const autoDownload = files.length === 1;
   for (const f of files) {
-    queue = queue.then(() => processFile(f, scheme, outputFormat, furiganaMode, autoDownload));
+    queue = queue.then(() => processFile(f, opts, autoDownload));
   }
-}
+});
 
 const drop = $('#drop');
-$('#picker').addEventListener('change', (e) => { handleFiles(e.target.files); e.target.value = ''; });
+$('#picker').addEventListener('change', (e) => { addPending(e.target.files); e.target.value = ''; });
 ['dragenter', 'dragover'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add('drag'); }));
 ['dragleave', 'drop'].forEach((t) => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove('drag'); }));
-drop.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
+drop.addEventListener('drop', (e) => addPending(e.dataTransfer.files));
+
+// 全部选项/待转换队列的绑定就绪后，再启动核心转换能力的加载。
+loadEngines();
 
 return {  };
 })();
