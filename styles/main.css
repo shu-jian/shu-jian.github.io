@@ -76,10 +76,15 @@ a{color:inherit}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.sheet{animation:none}}
 
-/* 首屏第一句：一句诗，大字细体（设计原型以 Noto Serif SC Light 为主，见 --serif；
-   细体重点在 font-weight，可变字重包能取到真正的 300） */
+/* 首屏第一句：一句诗，大字细体。字体级联即用户要的两段式：
+   ① 本地优先——Apple 设备（macOS/iOS）用系统自带的 Songti SC / STSong，
+      这正是离线 standalone 版首屏那副「大字字体」，苹果端不联网也一模一样；
+   ② 本地没有（安卓/Windows）——落到 var(--serif) 里网络加载的 Noto Serif SC。
+   Songti SC 是 Apple 私有系统字体，任何 CDN 都无法分发，故只能靠本地命中；
+   苹果端因此永远命中①、根本不碰网络字体。细体重点在 font-weight，
+   可变字重包能取到真正的 300。 */
 h1.poem{
-  font-family:var(--serif);
+  font-family:"Songti SC","STSong",var(--serif);
   font-weight:300;
   font-size:clamp(27px,4.9vw,45px);
   letter-spacing:.12em;
