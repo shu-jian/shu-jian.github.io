@@ -9,8 +9,10 @@
   --seal:#AF3A2A;            /* 朱砂印色 */
   --seal-deep:#8F2C20;
   --hairline:rgba(35,36,31,.22);
-  --serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",serif;
-  --sans:"PingFang SC","Hiragino Sans GB","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  /* "…Variable" 是 fontsource 可变字重包声明的族名（见 index.html 的字体 <link>）；
+     其后接非可变的 Noto Serif/Sans SC，再回退系统字体，任一层拉不到都不影响排版。 */
+  --serif:"Noto Serif SC Variable","Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",serif;
+  --sans:"Noto Sans SC Variable","Noto Sans SC","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif;
   --mono:ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -22,7 +24,7 @@ body{
     repeating-linear-gradient(-45deg, rgba(0,0,0,.05) 0 1px, transparent 1px 3px),
     linear-gradient(180deg, var(--indigo) 0%, var(--indigo-deep) 100%);
   color:var(--ink);
-  font-family:var(--sans);
+  font-family:var(--serif);   /* 设计原型：正文以 Noto Serif SC 为主 */
   font-size:15px;
   line-height:1.7;
   display:flex;
@@ -74,9 +76,10 @@ a{color:inherit}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.sheet{animation:none}}
 
-/* 首屏第一句：一句诗，大字细体（Mac 上 Songti SC Light；细体重点在 font-weight） */
+/* 首屏第一句：一句诗，大字细体（设计原型以 Noto Serif SC Light 为主，见 --serif；
+   细体重点在 font-weight，可变字重包能取到真正的 300） */
 h1.poem{
-  font-family:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",var(--serif);
+  font-family:var(--serif);
   font-weight:300;
   font-size:clamp(27px,4.9vw,45px);
   letter-spacing:.12em;
@@ -92,7 +95,7 @@ h1.poem{
 .scheme{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .scheme label{font-family:var(--serif);font-weight:600;letter-spacing:.08em;font-size:14.5px}
 .scheme select{
-  font-family:var(--sans);font-size:14px;color:var(--ink);
+  font-family:var(--serif);font-weight:500;font-size:14px;color:var(--ink);
   background:var(--paper-soft);
   border:1px solid var(--hairline);border-radius:3px;
   padding:8px 34px 8px 12px;line-height:1.4;

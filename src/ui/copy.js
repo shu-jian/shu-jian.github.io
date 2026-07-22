@@ -51,12 +51,12 @@ export const COPY = {
   // 首屏描述随当前功能切换（app.js setMode 里改写 #heroLede 的 innerHTML）：
   // 繁简一侧讲格式转换与边界；日文一侧换一套面向"读原著攒生词"的说法，两边不同。
   ledeTsHtml:
-    '<b>书简</b>，把 EPUB、MOBI、AZW3、TXT、PDF等格式 —— 转成适合 Kindle、Kobo、Apple Books。繁简互转、横竖排版，皆自动处理。',
+    '<b>书简</b>，把 EPUB、MOBI、AZW3、TXT、PDF等格式的繁体竖版书籍<br>转成适合 Kindle、Kobo、Apple Books的简体横版书籍<br>横竖排版，皆自动处理。',
   ledeFuriganaHtml:
-    '<b>书简</b>，为想在阅读里攒生词的你而生。把日文汉字逐个注上假名 —— 可以全标，也可以只标生僻字；配合 EPUB / KEPUB 输出，带着假名进 Kindle、Kobo、Apple Books。多音字难免出入。',
+    '<b>书简</b>，为想在阅读里攒生词的你而生。把日文汉字逐个注上假名<br>&nbsp;—— 带着假名进 Kindle、Kobo、Apple Books。',
 
   // 页脚小字（品牌 + 隐私承诺），见 shell.html #footerLine。
-  footerLine: '© 2026 书简 · 零服务器存储 · 隐私优先',
+  footerLine: '© 2026 书简 · 零服务器存储',
 
   /* ================ 2. 转换方案 / 输出格式 ================ */
 
@@ -80,7 +80,7 @@ export const COPY = {
     // generic＝只转字形、不换措辞（opencc 通用档 t2cn/cn2t）：網際網路 → 网际网路，
     // 词还是那个词。与"台湾用词"（會把它换成 互联网）区分开。
     { value: 'generic', label: '保留原文措辞（網際網路 → 网际网路）' },
-    { value: 'tw', label: '台湾用词（網際網路 → 互联网、滑鼠 → 鼠标）' },
+    { value: 'tw', label: '台湾用词（滑鼠 → 鼠标）' },
     { value: 'hk', label: '香港' },
   ],
 
@@ -135,7 +135,7 @@ export const COPY = {
   // 当前功能对应的即时说明（日文标音时说清适用范围、首次要下载词典这两件事）。
   modeNotice: (mode) =>
     mode === 'furigana'
-      ? '只对日语书有用，输出请选 EPUB 或 KEPUB。第一次用要下载一份日语词典，十七兆左右，只下载一次；多音字可能标错，没法保证全对。'
+      ? '只对日语书有用。'
       : '',
 
   /* ================ 开始转换 / 待转换列表 ================ */
@@ -147,7 +147,7 @@ export const COPY = {
   /* ================ 3. 拖放区 ================ */
 
   dropMain: '把文件拖到这里，或点击选择',
-  dropSub: '认识 .txt / .md / .zip / .epub / .docx / .pdf / .mobi / .azw3 / .azw · 可以一次选多个文件',
+  dropSub: '可以一次选多个文件',
 
   // 完全认不出的文件类型（扩展名不在 app.js 的 READERS 表里）
   unsupportedType: '这个文件认不出来，试试 .txt / .md / .zip / .epub / .docx / .pdf / .mobi / .azw3 / .azw 里的一种',
