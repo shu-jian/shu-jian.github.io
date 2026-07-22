@@ -5,19 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>书简</title>
 <meta name="description" content="">
-<!-- Noto Serif SC / Sans SC：非苹果设备（安卓/Windows）的网络字体兜底。
-     苹果端首屏大字命中本地 Songti SC，根本不会用到这里（见 main.css h1.poem）。
-     换成 fontsource 可变字重包替代设计原型里被墙的 Google Fonts：单文件覆盖
-     200–900，按 unicode-range 分片、只拉页面用到的子集。
-     两段式取源（沿用本站「CDN 多源回退」惯例）：主源 cdn.jsdelivr.net（大陆内外
-     均可、就近解析），拉不到时 onerror 落到备源 fastly.jsdelivr.net；两源皆挂
-     也只是回退到系统字体，页面照常。 -->
+<!-- 仅首屏诗句 + 版权句在「非苹果设备」上用到的网络字体（见 main.css --serif-hero）。
+     苹果端这两处也命中本地 Songti SC，压根不会用到这里；正文与其他地方一律本地
+     字体、不联网（拉取太慢）。故只保留 Noto Serif SC 一支，Sans 不再需要。
+     fontsource 可变字重包替代被墙的 Google Fonts：单文件覆盖 200–900，按
+     unicode-range 分片，只有诗句/版权那十几个字的子集会被拉取。
+     取源沿用本站「CDN 多源回退」：主源 cdn.jsdelivr.net，onerror 落备源
+     fastly.jsdelivr.net；两源皆挂再退回系统字体，页面照常。 -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/noto-serif-sc@5.3.0/index.css"
       onerror="this.onerror=null;this.href='https://fastly.jsdelivr.net/npm/@fontsource-variable/noto-serif-sc@5.3.0/index.css'">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/noto-sans-sc@5.3.0/index.css"
-      onerror="this.onerror=null;this.href='https://fastly.jsdelivr.net/npm/@fontsource-variable/noto-sans-sc@5.3.0/index.css'">
 <link rel="stylesheet" href="./styles/main.css">
 </head>
 <body>

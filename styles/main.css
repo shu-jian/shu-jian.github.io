@@ -9,10 +9,15 @@
   --seal:#AF3A2A;            /* 朱砂印色 */
   --seal-deep:#8F2C20;
   --hairline:rgba(35,36,31,.22);
-  /* "…Variable" 是 fontsource 可变字重包声明的族名（见 index.html 的字体 <link>）；
-     其后接非可变的 Noto Serif/Sans SC，再回退系统字体，任一层拉不到都不影响排版。 */
-  --serif:"Noto Serif SC Variable","Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",serif;
-  --sans:"Noto Sans SC Variable","Noto Sans SC","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  /* 字体分三档（用户要求）：
+     · --serif / --sans：正文与「其他地方」——一律本地字体、不联网下载（拉取太慢）。
+       苹果设备（macOS/iOS）命中系统自带的 Songti SC，其余设备回退本地系统字体。
+     · --serif-hero：仅首屏诗句 + 版权句——苹果仍命中本地 Songti SC；只有非苹果设备
+       才从 cdn.jsdelivr.net 网络加载 Noto Serif SC（可变字重包声明的族名带 " Variable"）。
+     Songti SC 是 Apple 私有系统字体，无 CDN 可分发，苹果端全靠本地命中、永不联网。 */
+  --serif:"Songti SC","STSong","Source Han Serif SC","SimSun",serif;
+  --sans:"Songti SC","STSong","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --serif-hero:"Songti SC","STSong","Noto Serif SC Variable","Noto Serif SC","Source Han Serif SC","SimSun",serif;
   --mono:ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -24,7 +29,7 @@ body{
     repeating-linear-gradient(-45deg, rgba(0,0,0,.05) 0 1px, transparent 1px 3px),
     linear-gradient(180deg, var(--indigo) 0%, var(--indigo-deep) 100%);
   color:var(--ink);
-  font-family:var(--serif);   /* 设计原型：正文以 Noto Serif SC 为主 */
+  font-family:var(--serif);   /* 正文与「其他地方」：本地字体、不联网；苹果→Songti SC */
   font-size:15px;
   line-height:1.7;
   display:flex;
@@ -76,15 +81,16 @@ a{color:inherit}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.sheet{animation:none}}
 
-/* 首屏第一句：一句诗，大字细体。字体级联即用户要的两段式：
+/* 首屏第一句：一句诗，大字细体。走 --serif-hero 两段式：
    ① 本地优先——Apple 设备（macOS/iOS）用系统自带的 Songti SC / STSong，
       这正是离线 standalone 版首屏那副「大字字体」，苹果端不联网也一模一样；
-   ② 本地没有（安卓/Windows）——落到 var(--serif) 里网络加载的 Noto Serif SC。
+   ② 本地没有（安卓/Windows）——落到 --serif-hero 里从 cdn.jsdelivr.net
+      网络加载的 Noto Serif SC。
    Songti SC 是 Apple 私有系统字体，任何 CDN 都无法分发，故只能靠本地命中；
    苹果端因此永远命中①、根本不碰网络字体。细体重点在 font-weight，
    可变字重包能取到真正的 300。 */
 h1.poem{
-  font-family:"Songti SC","STSong",var(--serif);
+  font-family:var(--serif-hero);
   font-weight:300;
   font-size:clamp(27px,4.9vw,45px);
   letter-spacing:.12em;
@@ -219,6 +225,7 @@ h1.poem{
 /* ── 页脚 ────────────────────────── */
 .foot{
   width:100%;max-width:760px;margin-top:30px;
+  font-family:var(--serif-hero);   /* 版权句与首屏诗句同档：苹果 Songti，非苹果走 cdn.jsdelivr.net 的 Noto */
   color:rgba(247,242,230,.55);font-size:12.5px;letter-spacing:.04em;
   text-align:center;line-height:2;
 }
