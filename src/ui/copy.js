@@ -43,9 +43,9 @@ export const COPY = {
 
   pageTitle: '书简 · 电子书繁简转换 · 日语注音',
   pageDescription:
-    '把电子书转换成你需要的格式，支持 EPUB、MOBI、PDF、TXT 等常见格式，也能转换繁简、给日文标音。全部处理都在你的设备本地完成，文件不会被上传。',
+    '电子书繁简转换 · 日语注音，支持 EPUB、MOBI、PDF、TXT 等常见格式，也能转换繁简、给日文标音。全部处理都在你的设备本地完成，文件不会被上传。',
 
-  // 首屏第一句：一句诗，大字细体（见 shell.html h1.poem 样式）。
+  // 首屏第一句：一句诗，大字细体（见 main.css .poem 样式）。
   heroTitle: '闲坐小窗读周易，\n不知春去几多时。',
 
   // 首屏描述随当前功能切换（app.js setMode 里改写 #heroLede 的 innerHTML）：
@@ -56,7 +56,7 @@ export const COPY = {
     '<b>书简</b>，为想在阅读里攒生词的你而生。把日文汉字逐个注上假名<br>&nbsp;—— 带着假名进 Kindle、微信读书、Apple Books。',
 
   // 页脚小字（品牌 + 隐私承诺），见 shell.html #footerLine。
-  footerLine: '© 2026 书简 · 书籍不上传服务器 · 隐私优先',
+  footerLine: '© 2026 书简 · 隐私优先',
 
   /* ================ 2. 转换方案 / 输出格式 ================ */
 

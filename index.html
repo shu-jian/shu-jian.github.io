@@ -3,8 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>书简</title>
-<meta name="description" content="">
+
+<!-- ============ SEO / 站点元信息（静态写入，供不执行 JS 的爬虫读取） ============
+     app.js 会在运行时把 title 与 description 再设为 COPY.pageTitle /
+     COPY.pageDescription（值与此处一致）；这里静态写死是为了让百度等
+     不渲染 JS 的爬虫、以及社交分享抓取器也能直接读到。改文案时两处一起改。 -->
+<title>书简 · 电子书繁简转换 · 日语注音</title>
+<meta name="description" content="电子书繁简转换 · 日语注音，支持 EPUB、MOBI、PDF、TXT 等常见格式，也能转换繁简、给日文标音。全部处理都在你的设备本地完成，文件不会被上传。">
+<meta name="keywords" content="电子书转换,繁简转换,繁体转简体,简体转繁体,EPUB 转换,MOBI,Kindle,微信读书,Apple Books,日语注音,振假名,furigana,本地转换,书简">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://shujian.ink/">
+
+<!-- 站点图标 -->
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#F7F2E6">
+
+<!-- Open Graph（微信 / 社交分享预览） -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="书简">
+<meta property="og:title" content="书简 · 电子书繁简转换 · 日语注音">
+<meta property="og:description" content="电子书繁简转换 · 日语注音，支持 EPUB、MOBI、PDF、TXT 等常见格式，也能转换繁简、给日文标音。全部处理都在你的设备本地完成，文件不会被上传。">
+<meta property="og:url" content="https://shujian.ink/">
+<meta property="og:locale" content="zh_CN">
+<!-- 分享缩略图：首屏那句诗在 macOS 上的实际渲染（Songti SC 细体，满版内页纸色）。
+     1200×630 宽图；微信等平台会取中央方图，故诗句与品牌行都收在中间 630 见方内，
+     裁成方图后信息不丢。
+     这里必须写绝对 URL：OGP 规范要求绝对地址，微信 / Twitter / 百度的抓取器基本
+     都不会拿页面 URL 去解析相对路径，写成 ./og.jpg 多半直接没有缩略图。
+     改图后记得同步下面的宽高，并给 URL 加 ?v=2 之类的串以刷新各平台的缩略图缓存
+     （微信、Twitter 都会长期缓存旧图）。 -->
+<meta property="og:image" content="https://shujian.ink/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="闲坐小窗读周易，不知春去几多时。—— 书简 · 电子书繁简转换 · 日语注音">
+
+<!-- Twitter 卡片 -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="书简 · 电子书繁简转换 · 日语注音">
+<meta name="twitter:description" content="电子书繁简转换 · 日语注音，支持 EPUB、MOBI、PDF、TXT 等常见格式，也能转换繁简、给日文标音。全部处理都在你的设备本地完成，文件不会被上传。">
+<meta name="twitter:image" content="https://shujian.ink/og.jpg">
+
+<!-- 结构化数据：Web 应用（帮助搜索引擎理解本站是什么） -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "书简",
+  "alternateName": "书简 · shū jiǎn",
+  "url": "https://shujian.ink/",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "任意（浏览器内运行）",
+  "inLanguage": "zh-CN",
+  "description": "纯前端的电子书处理网页：繁简互转、日语注音、格式转换（EPUB / MOBI / AZW3 / TXT / Markdown / PDF / DOCX 读入，EPUB / KEPUB / MOBI / TXT / PDF 导出）。文件不出本机，全部在浏览器里完成。",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+  "featureList": [
+    "繁简互转（词级）",
+    "日语汉字注音（振假名）",
+    "横竖排切换",
+    "EPUB / MOBI / AZW3 / TXT / Markdown / PDF / DOCX 读入",
+    "EPUB / KEPUB / MOBI / TXT / PDF 导出",
+    "本地处理，文件不上传服务器"
+  ]
+}
+</script>
+<!-- ============ /SEO ============ -->
+
 <!-- 仅首屏诗句 + 版权句在「非苹果设备」上用到的网络字体（见 main.css --serif-hero）。
      苹果端这两处也命中本地 Songti SC，压根不会用到这里；正文与其他地方一律本地
      字体、不联网（拉取太慢）。故只保留 Noto Serif SC 一支，Sans 不再需要。
@@ -20,9 +84,26 @@
 </head>
 <body>
 
+<!-- 静态回退：当浏览器/爬虫不执行 JS 时，页面主体（由 app.js 注入）会是空的。
+     这段内容保证不渲染 JS 的爬虫仍能读到本站的核心介绍。 -->
+<noscript>
+  <div style="max-width:60ch;margin:8vh auto;padding:0 6vw;font-family:serif;line-height:1.9;color:#23241F">
+    <h1>书简 · 电子书繁简转换 · 日语注音</h1>
+    <p>书简是一个纯前端的电子书处理网页：把书拖进来，得到一本处理好的书——文件不出本机，全部在浏览器里完成。</p>
+    <p><strong>读入格式：</strong>EPUB / MOBI / AZW3 / TXT / Markdown / PDF（文字版）/ DOCX / ZIP。
+       <strong>导出格式：</strong>EPUB / KEPUB / MOBI / TXT / PDF。</p>
+    <p><strong>可做的变换：</strong>繁简互转（词级）、日语汉字注音（振假名）、横竖排切换。适合把繁体竖版书转成
+       Kindle、微信读书、Apple Books 上好读的简体横版。</p>
+    <p>本页需要 JavaScript 才能运行转换功能，请在浏览器中启用 JavaScript 后使用。</p>
+  </div>
+</noscript>
+
 <main class="sheet-wrap">
   <div class="sheet" id="sheet" data-active-mode="ts">
-    <h1 id="heroTitle" class="poem"></h1>
+    <!-- 描述性 H1：视觉隐藏（.sr-only），仅供搜索引擎与读屏软件读取。
+         页面可见的首屏诗句已降级为下方的 <p class="poem">，不再充当标题。 -->
+    <h1 class="sr-only">书简 · 在浏览器里完成的电子书繁简转换；竖排图书转横排与日语注音工具</h1>
+    <p id="heroTitle" class="poem"></p>
 
     <div class="modes" role="tablist" aria-label="转换功能">
       <button type="button" class="mode" id="modeTs" role="tab" aria-selected="true">

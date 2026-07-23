@@ -1,0 +1,10 @@
+# robots.txt — 书简 · shujian.ink
+# 允许所有搜索引擎抓取全部页面。
+
+User-agent: *
+Allow: /
+
+# 内容使用信号（contentsignals.org）：允许被搜索收录，允许用于 AI 模型训练。
+Content-Signal: search=yes, ai-train=yes
+
+Sitemap: https://shujian.ink/sitemap.xml

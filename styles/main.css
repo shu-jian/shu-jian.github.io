@@ -89,7 +89,17 @@ a{color:inherit}
    Songti SC 是 Apple 私有系统字体，任何 CDN 都无法分发，故只能靠本地命中；
    苹果端因此永远命中①、根本不碰网络字体。细体重点在 font-weight，
    可变字重包能取到真正的 300。 */
-h1.poem{
+/* 视觉隐藏：从画面移除，但保留在 DOM 供搜索引擎/读屏软件读取（勿用 display:none） */
+.sr-only{
+  position:absolute;
+  width:1px;height:1px;
+  padding:0;margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+.poem{
   font-family:var(--serif-hero);
   font-weight:300;
   font-size:clamp(27px,4.9vw,45px);
