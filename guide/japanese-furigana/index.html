@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>电子书日文注音 — 日语振假名 / furigana（EPUB）｜书简</title>
+<meta name="description" content="给日文汉字标上振假名（读音假名），带着假名读原著攒生词。基于 kuromoji 词级分词，用 HTML ruby 标注，Kindle、微信读书、Apple Books 都能显示。本地完成，文件不上传。">
+<meta name="keywords" content="电子书日文注音,日语振假名,振假名,furigana,epub加假名,日文汉字注音,日语注音,kuromoji,ふりがな">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://shujian.ink/guide/japanese-furigana/">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#16233B">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="书简">
+<meta property="og:title" content="电子书日文注音 — 日语振假名 / furigana（EPUB）">
+<meta property="og:description" content="给日文汉字标上振假名，带着假名读原著攒生词。基于 kuromoji 词级分词，用 HTML ruby 标注，主流阅读器都能显示。文件不上传。">
+<meta property="og:url" content="https://shujian.ink/guide/japanese-furigana/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shujian.ink/og.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "书简", "item": "https://shujian.ink/" },
+    { "@type": "ListItem", "position": 2, "name": "使用说明", "item": "https://shujian.ink/guide/" },
+    { "@type": "ListItem", "position": 3, "name": "电子书日文注音", "item": "https://shujian.ink/guide/japanese-furigana/" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "给日文电子书加振假名（EPUB）",
+  "description": "用书简给日文汉字逐词标上振假名，用 HTML ruby 标注，文件在浏览器本地处理。",
+  "step": [
+    { "@type": "HowToStep", "position": 1, "name": "打开书简", "text": "打开 shujian.ink 首页工具。" },
+    { "@type": "HowToStep", "position": 2, "name": "选日文标音", "text": "功能切到“日文标音”。" },
+    { "@type": "HowToStep", "position": 3, "name": "选标注范围", "text": "标注范围选“全部汉字”或“只标生僻字”。" },
+    { "@type": "HowToStep", "position": 4, "name": "选输出 EPUB", "text": "输出格式选 EPUB（TXT 存不下假名）。" },
+    { "@type": "HowToStep", "position": 5, "name": "拖入并转换", "text": "把日语书拖进去，等词典就绪，点“开始转换”后下载。" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "什么是振假名？",
+      "acceptedAnswer": { "@type": "Answer", "text": "振假名（ふりがな / furigana）是标在日文汉字旁边的小假名，注明这个汉字怎么读，帮助阅读时不查词就知道读音。" }
+    },
+    {
+      "@type": "Question",
+      "name": "Kindle 能显示假名吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "能。振假名用标准的 HTML ruby 标注，Kindle、微信读书、Apple Books、Kobo 等主流阅读器都能把假名显示在汉字上方。" }
+    },
+    {
+      "@type": "Question",
+      "name": "注音会把我的书上传吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不会。分词和注音都在你的浏览器里完成，只有日语分词词典从网络加载，你的书不出本机。" }
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="/styles/guide.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="/"><span class="brand-mark">书简</span></a>
+  <p class="brand-tag">电子书处理 · 繁简转换 · 竖横排 · 日文注音</p>
+</header>
+
+<main class="wrap">
+  <article class="sheet">
+    <nav class="crumb" aria-label="面包屑">
+      <a href="/">书简</a><span class="sep">›</span><a href="/guide/">使用说明</a><span class="sep">›</span><span aria-current="page">电子书日文注音</span>
+    </nav>
+
+    <h1>电子书日文注音 / 振假名（EPUB）</h1>
+    <p class="lead">想读日文原著、又不想每个汉字都停下来查读音？书简能给日文汉字逐词标上<b>振假名</b>（ふりがな），带着假名进 Kindle、微信读书、Apple Books。</p>
+
+    <h2>什么是振假名</h2>
+    <p>振假名（ふりがな，furigana）是标在日文汉字旁的小假名，注明这个汉字怎么读。日本的童书、教科书、给学习者的读物都会加。对在阅读里攒生词的人来说，它让你不打断阅读就知道读音，扫一眼就记住了。</p>
+    <div class="eg">
+      <span class="eg-label">振假名长这样（下面是真的 ruby，假名标在汉字上方）</span>
+      <span style="font-size:22px;line-height:2.4"><ruby>日本語<rt>にほんご</rt></ruby> を <ruby>読<rt>よ</rt></ruby>む</span>
+    </div>
+
+    <h2>书简怎么加注音</h2>
+    <p>书简走的是<strong>词级分词</strong>，不是逐字查表：</p>
+    <ul>
+      <li>用开源的 kuromoji 做日语分词，把句子切成词、拿到每个词的读音。</li>
+      <li>读音从片假名转成惯用的平假名。</li>
+      <li>用标准的 HTML <kbd>&lt;ruby&gt;</kbd> 结构把假名标在汉字上方——这是电子书通行的注音写法。</li>
+    </ul>
+    <p>标注范围可选：</p>
+    <ul>
+      <li><strong>全部汉字</strong>：每个汉字都标。</li>
+      <li><strong>只标生僻字</strong>：常见字不标，把假名留给真正难的字，页面更清爽。</li>
+    </ul>
+
+    <h2>哪些阅读器能显示假名</h2>
+    <p><kbd>&lt;ruby&gt;</kbd> 是 EPUB 通行标准，主流阅读器都支持良好：<strong>Kindle、微信读书、Apple Books、Kobo</strong> 等，都会把假名显示在汉字上方。</p>
+
+    <h2>第一次用要下载词典</h2>
+    <p>第一次注音时，书简会加载日语分词词典（约 17MB）。这仍然在本地完成：词典是程序的一部分，你的书不会上传。之后走缓存，不用再等。</p>
+
+    <h2>操作步骤</h2>
+    <ol class="steps">
+      <li>打开书简（点文末按钮回首页工具）。</li>
+      <li>功能切到「日文标音」。</li>
+      <li>标注范围选「全部汉字」或「只标生僻字」。</li>
+      <li>输出格式选 <kbd>EPUB</kbd>（TXT 存不下假名）。</li>
+      <li>把日语书拖进去，等词典就绪，点「开始转换」后下载。</li>
+    </ol>
+
+    <h2>有哪些边界</h2>
+    <div class="note">
+      <ul>
+        <li><strong>只对日语书有用</strong>：它给的是日语读音，中文书用不上。</li>
+        <li><strong>生僻 / 未登录词可能没读音</strong>：分词词典没收的词，标不出假名，会原样留着。</li>
+        <li><strong>别同时叠加繁简转换</strong>：繁简词库会把一些日文汉字改成分词认不出的字形，导致那个字丢读音。给日语书注音时，繁简请选「不转换」。</li>
+        <li><strong>要用 EPUB</strong>：振假名是 <kbd>&lt;ruby&gt;</kbd> 富文本，纯 TXT 存不下。</li>
+      </ul>
+    </div>
+
+    <div class="cta"><a class="btn" href="/">打开书简，给这本书注音 →</a></div>
+
+    <nav class="related" aria-label="相关页面">
+      <h2>相关</h2>
+      <div class="cards">
+        <a class="card" href="/guide/vertical-to-horizontal/">
+          <span class="card-t">电子书竖版转横版</span>
+          <span class="card-d">日文原版常是竖排，可按需要改成横排。</span>
+        </a>
+        <a class="card" href="/guide/epub-txt-formats/">
+          <span class="card-t">EPUB 与 TXT 处理方法</span>
+          <span class="card-d">为什么注音要用 EPUB、不能用 TXT。</span>
+        </a>
+      </div>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-foot">
+  <a href="/">© 2026 书简 · 隐私优先</a>
+</footer>
+
+</body>
+</html>

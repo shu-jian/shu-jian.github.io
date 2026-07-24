@@ -165,7 +165,10 @@
 </main>
 
 <footer class="foot">
-  <span id="footerLine"></span>
+  <!-- 版权行本身即「电子书处理指南」(/guide/) 的入口：静态写死，让不执行 JS
+       的爬虫（如百度）也能看到并跟进这个内链；app.js 仍会把 #footerLine 文本
+       重设为同一句 COPY.footerLine（无害），外层 <a> 不受影响。 -->
+  <a href="/guide/" title="电子书处理指南"><span id="footerLine">© 2026 书简 · 隐私优先</span></a>
 </footer>
 
 <script type="module" src="./src/ui/app.js"></script>

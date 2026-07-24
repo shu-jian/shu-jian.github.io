@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>电子书繁体转简体 — EPUB / TXT 繁转简｜书简</title>
+<meta name="description" content="把繁体的 EPUB、TXT 电子书转成简体：词级转换（基于 OpenCC），可选台湾 / 香港用词，只转文字不动排版。全部在浏览器本地完成，文件不上传。">
+<meta name="keywords" content="电子书繁体转简体,epub繁体转简体,txt繁体转简体,繁转简,繁体书转简体,简体转繁体,繁简转换,OpenCC">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://shujian.ink/guide/traditional-to-simplified/">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#16233B">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="书简">
+<meta property="og:title" content="电子书繁体转简体 — EPUB / TXT 繁转简">
+<meta property="og:description" content="把繁体的 EPUB、TXT 电子书转成简体：词级转换，可选台湾 / 香港用词，只转文字不动排版。文件不上传。">
+<meta property="og:url" content="https://shujian.ink/guide/traditional-to-simplified/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shujian.ink/og.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "书简", "item": "https://shujian.ink/" },
+    { "@type": "ListItem", "position": 2, "name": "使用说明", "item": "https://shujian.ink/guide/" },
+    { "@type": "ListItem", "position": 3, "name": "电子书繁体转简体", "item": "https://shujian.ink/guide/traditional-to-simplified/" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "把繁体电子书转成简体（EPUB / TXT）",
+  "description": "用书简把繁体的 EPUB 或 TXT 电子书转成简体，词级转换，可选地区用词，文件在浏览器本地处理。",
+  "step": [
+    { "@type": "HowToStep", "position": 1, "name": "打开书简", "text": "打开 shujian.ink 首页工具。" },
+    { "@type": "HowToStep", "position": 2, "name": "选转换方向", "text": "功能选“繁简转换”，转换方向选“繁体 → 简体”。" },
+    { "@type": "HowToStep", "position": 3, "name": "选地区用词", "text": "按需要选地区用词；不确定就用“保留原文措辞”。" },
+    { "@type": "HowToStep", "position": 4, "name": "选输出格式", "text": "输出格式选 EPUB 或 TXT。" },
+    { "@type": "HowToStep", "position": 5, "name": "拖入文件", "text": "把书拖进虚线框，或点击选择文件。" },
+    { "@type": "HowToStep", "position": 6, "name": "开始并下载", "text": "点“开始转换”，转好后下载简体版。" }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="/styles/guide.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="/"><span class="brand-mark">书简</span></a>
+  <p class="brand-tag">电子书处理 · 繁简转换 · 竖横排 · 日文注音</p>
+</header>
+
+<main class="wrap">
+  <article class="sheet">
+    <nav class="crumb" aria-label="面包屑">
+      <a href="/">书简</a><span class="sep">›</span><a href="/guide/">使用说明</a><span class="sep">›</span><span aria-current="page">电子书繁体转简体</span>
+    </nav>
+
+    <h1>电子书繁体转简体（EPUB / TXT）</h1>
+    <p class="lead">手上的书是繁体，想读简体？书简能把繁体的 <b>EPUB</b>、<b>TXT</b> 直接转成简体——<b>词级转换</b>、连用词一起换，而且文件不出本机。</p>
+
+    <h2>为什么要把繁体电子书转简体</h2>
+    <p>很多书源只有繁体：台湾、香港出的电子书，或早年流传下来的繁体版本。如果你习惯读简体，或想在 Kindle、微信读书、Apple Books 上少费点眼力，把整本书一次转成简体会舒服很多。反过来，简体转繁体也是同一套东西。</p>
+
+    <h2>书简怎么转：词级，不是逐字替换</h2>
+    <p>繁简转换最容易出错的地方，是把它当成“一个字换一个字”。可很多字并非一一对应——同一个简体字可能对应几个繁体字，两岸三地的用词习惯也不一样。书简用的是<strong>词级转换</strong>（基于开源的 OpenCC 词库），按词来判断，而不是盲目逐字替换。</p>
+    <p>它把选择拆成两个互不干扰的下拉：</p>
+    <ul>
+      <li><strong>转换方向</strong>：繁体 → 简体 / 简体 → 繁体 / 不转换。</li>
+      <li><strong>地区用词</strong>：决定按哪儿的用字与措辞习惯来转。</li>
+    </ul>
+    <div class="eg">
+      <span class="eg-label">同样一句，两种档位的差别</span>
+      保留原文措辞：網際網路<span class="arrow">→</span>网际网路（只换字形，词还是那个词）<br>
+      台湾用词：滑鼠<span class="arrow">→</span>鼠标（连说法一起换成大陆习惯）
+    </div>
+    <p>这样“要不要转、往哪个方向转”和“按哪个地区的用词”彼此分开，各管各的，不会互相纠缠。</p>
+
+    <h2>支持的格式：EPUB 与 TXT 都行</h2>
+    <p>繁简转换发生在纯文本这一层，所以两种格式都能转：</p>
+    <ul>
+      <li><strong>EPUB</strong>：保留章节与目录结构，只把里面的文字转成简体。</li>
+      <li><strong>TXT</strong>：整篇文字转成简体。</li>
+    </ul>
+    <p>转好的简体书，可以直接导进 Kindle、微信读书、Apple Books、Kobo 阅读。</p>
+
+    <h2>操作步骤</h2>
+    <ol class="steps">
+      <li>打开书简（点文末按钮回首页工具）。</li>
+      <li>功能选「繁简转换」，转换方向选「繁体 → 简体」。</li>
+      <li>地区用词按需要选，不确定就用「保留原文措辞」。</li>
+      <li>输出格式选 <kbd>EPUB</kbd> 或 <kbd>TXT</kbd>。</li>
+      <li>把书拖进虚线框，或点击选择文件。</li>
+      <li>点「开始转换」，转好后下载简体版。</li>
+    </ol>
+
+    <h2>有哪些边界</h2>
+    <div class="note">
+      <ul>
+        <li><strong>只转文字，不动排版</strong>：章节结构、目录原样保留，字体字号交给阅读器。</li>
+        <li><strong>本地完成</strong>：文件不上传，转换在你的浏览器里跑。</li>
+        <li><strong>日语书别叠加繁简转换</strong>：繁简词库会把一部分日文汉字改成分词认不出的字形，反而让注音掉读音。想给日语书注音，请到 <a href="/guide/japanese-furigana/">日文注音</a> 页单独做。</li>
+      </ul>
+    </div>
+
+    <div class="cta"><a class="btn" href="/">打开书简，转这本书 →</a></div>
+
+    <nav class="related" aria-label="相关页面">
+      <h2>相关</h2>
+      <div class="cards">
+        <a class="card" href="/guide/vertical-to-horizontal/">
+          <span class="card-t">电子书竖版转横版</span>
+          <span class="card-d">繁体书常是竖排，转简体的同时也能改成横排。</span>
+        </a>
+        <a class="card" href="/guide/epub-txt-formats/">
+          <span class="card-t">EPUB 与 TXT 处理方法</span>
+          <span class="card-d">两种格式各适合什么、边界在哪。</span>
+        </a>
+      </div>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-foot">
+  <a href="/">© 2026 书简 · 隐私优先</a>
+</footer>
+
+</body>
+</html>

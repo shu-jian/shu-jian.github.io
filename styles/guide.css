@@ -1,0 +1,196 @@
+/* ============================================================
+ * styles/guide.css · /guide/ 内容页样式（自包含，不影响工具页 main.css）
+ *
+ * 这些页是给搜索引擎与偶尔从搜索落地的真人看的静态内容页，独立于
+ * 首页工具。视觉复用书简的设计令牌（磁青封面底 + 纸色面板 + 朱砂），
+ * 但类名全部另起、不与 main.css 冲突；guide 页只 <link> 这一个样式表。
+ *
+ * 字体一律本地（--serif：苹果端 Songti SC，其余回退系统衬线），
+ * 不拉任何网络字体——guide 页零外部请求，爬虫与真人都秒开。
+ * ============================================================ */
+
+:root{
+  --indigo:#16233B;          /* 磁青书衣 */
+  --indigo-deep:#101A2C;
+  --paper:#F7F2E6;           /* 内页纸色 */
+  --paper-soft:#FCF8EE;
+  --paper-edge:#E7DEC9;
+  --ink:#23241F;
+  --ink-soft:#6B675B;
+  --seal:#AF3A2A;            /* 朱砂印色 */
+  --seal-deep:#8F2C20;
+  --hairline:rgba(35,36,31,.22);
+  --serif:"Songti SC","STSong","Source Han Serif SC","SimSun",serif;
+  --sans:"Songti SC","STSong","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Consolas,monospace;
+  --measure:40rem;           /* 阅读栏宽（中文正文） */
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.014) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(-45deg, rgba(0,0,0,.05) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:16px;
+  line-height:1.9;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:0 20px 56px;
+}
+
+/* ── 站头（书简字标，链回工具） ───────────────── */
+.site-header{
+  width:100%;max-width:var(--measure);
+  text-align:center;color:var(--paper);
+  padding:40px 4px 10px;
+}
+.brand{display:inline-block;text-decoration:none;color:var(--paper)}
+.brand-mark{
+  font-family:var(--serif);font-size:27px;font-weight:600;letter-spacing:.34em;
+  padding-left:.34em; /* 补偿末字右侧字距，视觉居中 */
+}
+.brand-tag{
+  margin-top:8px;font-size:12.5px;letter-spacing:.1em;
+  color:rgba(247,242,230,.6);
+}
+
+/* ── 纸页面板 ───────────────────────────────── */
+.wrap{width:100%;max-width:var(--measure);margin-top:26px}
+.sheet{
+  position:relative;
+  background:var(--paper);
+  border-radius:4px;
+  padding:48px 52px 40px;
+  box-shadow:0 2px 0 var(--paper-edge), 0 5px 0 rgba(231,222,201,.55), 0 24px 60px rgba(0,0,0,.45);
+  animation:rise .45s ease-out both;
+}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+
+/* ── 面包屑 ─────────────────────────────────── */
+.crumb{
+  font-size:12.5px;color:var(--ink-soft);letter-spacing:.03em;
+  margin-bottom:26px;padding-bottom:16px;border-bottom:1px solid var(--hairline);
+}
+.crumb a{color:var(--ink-soft);text-decoration:none;text-underline-offset:2px}
+.crumb a:hover{color:var(--seal);text-decoration:underline}
+.crumb .sep{margin:0 .5em;color:var(--hairline)}
+.crumb [aria-current]{color:var(--ink)}
+
+/* ── 正文排印 ───────────────────────────────── */
+.sheet h1{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(25px,4.6vw,33px);letter-spacing:.03em;line-height:1.45;
+  color:var(--ink);
+}
+.lead{
+  margin-top:16px;font-size:16.5px;line-height:1.95;color:var(--ink-soft);
+}
+.lead b,.lead strong{color:var(--ink);font-weight:600}
+.sheet h2{
+  font-family:var(--serif);font-weight:600;font-size:20px;letter-spacing:.04em;
+  color:var(--ink);margin-top:40px;padding-left:14px;
+  border-left:3px solid var(--seal);line-height:1.4;
+}
+.sheet h3{
+  font-family:var(--serif);font-weight:600;font-size:16.5px;letter-spacing:.03em;
+  color:var(--ink);margin-top:26px;
+}
+.sheet p{margin-top:14px;color:var(--ink);line-height:1.95}
+.sheet strong{font-weight:600}
+.sheet a{color:var(--seal);text-decoration:none;text-underline-offset:3px;border-bottom:1px solid rgba(175,58,42,.32)}
+.sheet a:hover{color:var(--seal-deep);border-bottom-color:var(--seal-deep)}
+
+.sheet ul,.sheet ol{margin-top:14px;padding-left:1.4em}
+.sheet li{margin-top:8px;line-height:1.9}
+.sheet ul{list-style:none;padding-left:0}
+.sheet ul>li{position:relative;padding-left:1.3em}
+.sheet ul>li::before{
+  content:"·";position:absolute;left:.2em;top:-.05em;
+  color:var(--seal);font-weight:700;font-size:1.15em;
+}
+/* 步骤：有序列表带朱砂序号 */
+ol.steps{list-style:none;padding-left:0;counter-reset:step;margin-top:18px}
+ol.steps>li{position:relative;padding-left:2.4em;margin-top:14px;min-height:1.7em}
+ol.steps>li::before{
+  counter-increment:step;content:counter(step);
+  position:absolute;left:0;top:.15em;
+  width:1.7em;height:1.7em;border-radius:50%;
+  background:var(--seal);color:#FBF3E4;
+  font-family:var(--sans);font-size:.8em;font-weight:600;
+  display:grid;place-items:center;line-height:1;
+}
+
+/* 例子 / 提示 callout */
+.eg{
+  margin-top:18px;background:var(--paper-soft);
+  border:1px solid var(--hairline);border-left:3px solid var(--seal);
+  border-radius:3px;padding:14px 18px;font-size:15px;line-height:1.9;color:var(--ink);
+}
+.eg .arrow{color:var(--seal);font-weight:700;margin:0 .35em}
+.eg-label{
+  display:block;font-size:12px;letter-spacing:.08em;color:var(--ink-soft);
+  margin-bottom:6px;font-family:var(--sans);
+}
+kbd{
+  font-family:var(--mono);font-size:.86em;background:var(--paper-soft);
+  border:1px solid var(--hairline);border-radius:3px;padding:1px 6px;
+}
+
+/* 诚实边界小节：略灰、成组 */
+.note{
+  margin-top:18px;font-size:14.5px;color:var(--ink-soft);line-height:1.9;
+}
+
+/* ── CTA：打开工具 ──────────────────────────── */
+.cta{margin-top:38px;text-align:center}
+.btn{
+  display:inline-block;
+  font-family:var(--serif);font-size:16px;font-weight:600;letter-spacing:.1em;
+  background:var(--seal);color:#FBF3E4 !important;
+  border:none;border-bottom:none !important;border-radius:4px;
+  padding:13px 34px;text-decoration:none;
+  transition:background .15s;
+}
+.btn:hover{background:var(--seal-deep);color:#FBF3E4 !important}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+/* ── 相关页面 / 卡片 ────────────────────────── */
+.related{margin-top:40px;padding-top:24px;border-top:1px solid var(--hairline)}
+.related h2{margin-top:0;border-left:none;padding-left:0;font-size:15px;color:var(--ink-soft);letter-spacing:.08em}
+.cards{display:grid;gap:12px;margin-top:16px}
+@media (min-width:620px){.cards{grid-template-columns:1fr 1fr}}
+.card{
+  display:block;background:var(--paper-soft);
+  border:1px solid var(--hairline);border-radius:4px;
+  padding:16px 18px;text-decoration:none;color:var(--ink) !important;
+  border-bottom:1px solid var(--hairline) !important;
+  transition:border-color .15s,transform .15s;
+}
+.card:hover{border-color:var(--seal);transform:translateY(-1px)}
+.card .card-t{font-family:var(--serif);font-weight:600;font-size:16px;color:var(--ink)}
+.card .card-d{margin-top:5px;font-size:13px;color:var(--ink-soft);line-height:1.7}
+.card .card-t::after{content:" →";color:var(--seal)}
+
+/* ── 页脚 ───────────────────────────────────── */
+.site-foot{
+  width:100%;max-width:var(--measure);margin-top:30px;
+  text-align:center;font-size:12.5px;letter-spacing:.04em;line-height:2;
+  color:rgba(247,242,230,.55);
+}
+.site-foot a{color:rgba(247,242,230,.78);text-decoration:none;text-underline-offset:3px}
+.site-foot a:hover{text-decoration:underline}
+
+/* ── 窄屏 ───────────────────────────────────── */
+@media (max-width:680px){
+  body{font-size:15.5px}
+  .sheet{padding:32px 22px 30px}
+  .site-header{padding:30px 4px 8px}
+}

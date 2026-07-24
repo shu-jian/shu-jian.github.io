@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>电子书竖版转横版 — EPUB 竖排转横排｜书简</title>
+<meta name="description" content="把竖排右起的 EPUB 电子书转成横排，也能反向做成竖排直排：改写排版方向，阅读器据此渲染。只改方向不重排图文，本地完成，文件不上传。">
+<meta name="keywords" content="电子书竖版转横版,epub竖排转横排,竖排转横排,竖版转横版,横排转竖排,直排,繁体竖版书转横排,排版方向">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://shujian.ink/guide/vertical-to-horizontal/">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#16233B">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="书简">
+<meta property="og:title" content="电子书竖版转横版 — EPUB 竖排转横排">
+<meta property="og:description" content="把竖排右起的 EPUB 转成横排，也能反向直排：改写排版方向，只改方向不重排图文。文件不上传。">
+<meta property="og:url" content="https://shujian.ink/guide/vertical-to-horizontal/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shujian.ink/og.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "书简", "item": "https://shujian.ink/" },
+    { "@type": "ListItem", "position": 2, "name": "使用说明", "item": "https://shujian.ink/guide/" },
+    { "@type": "ListItem", "position": 3, "name": "电子书竖版转横版", "item": "https://shujian.ink/guide/vertical-to-horizontal/" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "把竖版电子书转成横版（EPUB）",
+  "description": "用书简把竖排右起的 EPUB 改成横排，或反向做成竖排；改写排版方向，文件在浏览器本地处理。",
+  "step": [
+    { "@type": "HowToStep", "position": 1, "name": "打开书简", "text": "打开 shujian.ink 首页工具。" },
+    { "@type": "HowToStep", "position": 2, "name": "选输出 EPUB", "text": "输出格式选 EPUB。" },
+    { "@type": "HowToStep", "position": 3, "name": "选排版方向", "text": "排版方向选“横排”；想直排就选“竖排”。" },
+    { "@type": "HowToStep", "position": 4, "name": "拖入并转换", "text": "把书拖进虚线框，点“开始转换”，转好后下载。" }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="/styles/guide.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="/"><span class="brand-mark">书简</span></a>
+  <p class="brand-tag">电子书处理 · 繁简转换 · 竖横排 · 日文注音</p>
+</header>
+
+<main class="wrap">
+  <article class="sheet">
+    <nav class="crumb" aria-label="面包屑">
+      <a href="/">书简</a><span class="sep">›</span><a href="/guide/">使用说明</a><span class="sep">›</span><span aria-current="page">电子书竖版转横版</span>
+    </nav>
+
+    <h1>电子书竖版转横版（EPUB）</h1>
+    <p class="lead">台湾、香港、日文原版的书常是<b>竖排右起</b>，在有些阅读器上读着别扭。书简能把 EPUB 的排版方向改成横排——也能反过来，把横排做成竖排直排。</p>
+
+    <h2>竖排书是怎么回事</h2>
+    <p>传统中文与日文书是竖排：字从上往下走，行从右往左排。台湾、香港出的电子书，以及日文原版，很多沿用这种排法。竖排本身很美，但如果你的阅读器对竖排支持一般，或你个人更习惯横排扫读，就会想换个方向。</p>
+
+    <h2>书简怎么做：改写 EPUB 的排版方向</h2>
+    <p>书简不逐页重排，而是改写 EPUB 里记录“这本书该怎么排”的<strong>排版方向</strong>（也就是 <kbd>writing-mode</kbd>）：</p>
+    <ul>
+      <li><strong>横排</strong>：从左到右、从上到下。</li>
+      <li><strong>竖排（直排）</strong>：从上到下、行从右往左。</li>
+      <li><strong>保持原书</strong>：不动方向。</li>
+    </ul>
+    <p>阅读器读到这个方向，就按它来渲染。所以书简<strong>既能竖版转横版，也能横版转竖版</strong>——想要直排沉浸感的人，反过来用就行。</p>
+
+    <h2>只在 EPUB 这类格式里生效</h2>
+    <p>排版方向是“富文本”才有的概念，所以它在 <strong>EPUB、KEPUB、PDF</strong> 里生效；<strong>TXT、MOBI</strong> 这类不带排版方向的格式，选了也不会起作用。想转排版方向，请用 EPUB。</p>
+
+    <h2>操作步骤</h2>
+    <ol class="steps">
+      <li>打开书简（点文末按钮回首页工具）。</li>
+      <li>输出格式选 <kbd>EPUB</kbd>。</li>
+      <li>排版方向选「横排」；想做直排就选「竖排」。</li>
+      <li>需要的话，繁简转换可以顺手一起做。</li>
+      <li>把书拖进去，点「开始转换」，下载。</li>
+    </ol>
+
+    <h2>有哪些边界</h2>
+    <div class="note">
+      <ul>
+        <li><strong>改的是方向，不是重排</strong>：书简只改这本书的排版方向，不会替你重排图文、调页边距；行距、标点位置由阅读器按新方向渲染。</li>
+        <li><strong>结构保持</strong>：章节、目录原样保留。</li>
+        <li><strong>本地完成</strong>：文件不上传。</li>
+      </ul>
+    </div>
+
+    <div class="cta"><a class="btn" href="/">打开书简，转这本书 →</a></div>
+
+    <nav class="related" aria-label="相关页面">
+      <h2>相关</h2>
+      <div class="cards">
+        <a class="card" href="/guide/traditional-to-simplified/">
+          <span class="card-t">电子书繁体转简体</span>
+          <span class="card-d">竖排书多为繁体，可以转横排的同时一起转简体。</span>
+        </a>
+        <a class="card" href="/guide/epub-txt-formats/">
+          <span class="card-t">EPUB 与 TXT 处理方法</span>
+          <span class="card-d">为什么排版方向只在 EPUB 里生效。</span>
+        </a>
+      </div>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-foot">
+  <a href="/">© 2026 书简 · 隐私优先</a>
+</footer>
+
+</body>
+</html>

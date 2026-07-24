@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EPUB 与 TXT 电子书怎么处理 — 格式说明与支持范围｜书简</title>
+<meta name="description" content="EPUB 和 TXT 各适合什么、书简怎么处理这两种电子书、有哪些边界。只搬章节与文字，字体交给阅读器；全部在浏览器本地完成，文件不上传。">
+<meta name="keywords" content="EPUB是什么,TXT电子书,epub转txt,电子书格式转换,保留章节,EPUB与TXT区别,电子书本地处理,书简">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://shujian.ink/guide/epub-txt-formats/">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#16233B">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="书简">
+<meta property="og:title" content="EPUB 与 TXT 电子书怎么处理 — 格式说明与支持范围">
+<meta property="og:description" content="EPUB 和 TXT 各适合什么、书简怎么处理这两种电子书、边界在哪。只搬章节与文字，文件本地处理不上传。">
+<meta property="og:url" content="https://shujian.ink/guide/epub-txt-formats/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shujian.ink/og.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "书简", "item": "https://shujian.ink/" },
+    { "@type": "ListItem", "position": 2, "name": "使用说明", "item": "https://shujian.ink/guide/" },
+    { "@type": "ListItem", "position": 3, "name": "EPUB 与 TXT 处理方法", "item": "https://shujian.ink/guide/epub-txt-formats/" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "文件会不会被上传？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不会。整个处理在你的浏览器本地完成，没有上传或后端；只有开源库和日语词典从网络加载，你的书不出本机。" }
+    },
+    {
+      "@type": "Question",
+      "name": "EPUB 和 TXT 该选哪个？",
+      "acceptedAnswer": { "@type": "Answer", "text": "想保留章节、加注音或改排版方向，选 EPUB；只要干净的纯文字、或要喂给别的工具，选 TXT。" }
+    },
+    {
+      "@type": "Question",
+      "name": "TXT 能保留排版和注音吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不能。振假名、竖横排这些需要富文本，纯 TXT 存不下，请导出成 EPUB。" }
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="/styles/guide.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="/"><span class="brand-mark">书简</span></a>
+  <p class="brand-tag">电子书处理 · 繁简转换 · 竖横排 · 日文注音</p>
+</header>
+
+<main class="wrap">
+  <article class="sheet">
+    <nav class="crumb" aria-label="面包屑">
+      <a href="/">书简</a><span class="sep">›</span><a href="/guide/">使用说明</a><span class="sep">›</span><span aria-current="page">EPUB 与 TXT 处理方法</span>
+    </nav>
+
+    <h1>EPUB 与 TXT：书简怎么处理这两种电子书</h1>
+    <p class="lead">书简目前处理得最稳妥的是 <b>EPUB</b> 与 <b>TXT</b>。这页说清两种格式各适合什么、书简对它们做什么、又不做什么。</p>
+
+    <h2>EPUB 与 TXT 各是什么</h2>
+    <ul>
+      <li><strong>EPUB</strong>：主流电子书格式，带章节、目录和排版信息。Apple Books、Kobo、微信读书、多看等原生支持，Kindle 也能导入。想保留结构、加注音或改排版方向，选它。</li>
+      <li><strong>TXT</strong>：最朴素的纯文字，没有章节样式、图片或排版，胜在通用、体积小、哪儿都打得开。只想要干净文字、或要喂给别的工具，选它。</li>
+    </ul>
+
+    <h2>书简的处理哲学：只搬章节与文字</h2>
+    <p>书简把每本书先读成一套统一的“中间表示”——章节、标题层级、目录结构和文字——再在这套结构上做变换，导出成新书。它有意<strong>只搬章节结构与文字，字体、字号这些交给你的阅读器</strong>，不替你锁死排版。好处是：无论输入是什么，繁简、注音、排版方向这些变换都作用在同一套干净结构上，结果稳定、可预期。</p>
+
+    <h2>读入与导出：这次重点是 EPUB 与 TXT</h2>
+    <ul>
+      <li><strong>读入</strong>：EPUB、TXT 最稳。书简也能读 MOBI、AZW3、PDF、DOCX 等格式，但它们目前处理得还不够完美；遇到这些，建议先用 <strong>Calibre</strong> 等工具转成 EPUB，再拿到书简来做繁简、注音、排版。</li>
+      <li><strong>导出</strong>：EPUB、TXT，以及 KEPUB（Kobo 专用）、MOBI、PDF。</li>
+    </ul>
+
+    <h2>明说做不到的</h2>
+    <div class="note">
+      <p>纯 TXT 保留不了图片、注释、排版方向和振假名——这些需要“富文本”，而 TXT 只有光秃秃的文字。想要注音或竖横排，导出请选 EPUB。</p>
+    </div>
+
+    <h2>文件会不会被上传？</h2>
+    <p>不会。书简没有后端、上传或 API，你的书从头到尾都在浏览器里。唯一联网的是从公共 CDN 加载开源库与日语词典——那是程序，不是你的文件。断网离线也能用。</p>
+
+    <div class="cta"><a class="btn" href="/">打开书简 →</a></div>
+
+    <nav class="related" aria-label="相关页面">
+      <h2>相关</h2>
+      <div class="cards">
+        <a class="card" href="/guide/traditional-to-simplified/">
+          <span class="card-t">电子书繁体转简体</span>
+          <span class="card-d">EPUB、TXT 都能繁转简，词级转换。</span>
+        </a>
+        <a class="card" href="/guide/japanese-furigana/">
+          <span class="card-t">电子书日文注音</span>
+          <span class="card-d">给日文汉字加振假名，要用 EPUB。</span>
+        </a>
+      </div>
+    </nav>
+  </article>
+</main>
+
+<footer class="site-foot">
+  <a href="/">© 2026 书简 · 隐私优先</a>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>电子书处理指南 · 繁简转换 / 竖横排 / 日文注音｜书简</title>
+<meta name="description" content="书简的电子书处理指南：繁体转简体、竖版转横版、日文注音怎么用，各能做到什么、边界在哪。EPUB、TXT 都在你的设备本地处理，文件不上传。">
+<meta name="keywords" content="电子书处理,电子书转换,繁体转简体,竖版转横版,日文注音,振假名,EPUB,TXT,本地转换,书简">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://shujian.ink/guide/">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#16233B">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="书简">
+<meta property="og:title" content="电子书处理指南 · 繁简转换 / 竖横排 / 日文注音｜书简">
+<meta property="og:description" content="繁体转简体、竖版转横版、日文注音怎么用，各能做到什么、边界在哪。EPUB、TXT 都在你的设备本地处理，文件不上传。">
+<meta property="og:url" content="https://shujian.ink/guide/">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shujian.ink/og.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "书简", "item": "https://shujian.ink/" },
+    { "@type": "ListItem", "position": 2, "name": "使用说明", "item": "https://shujian.ink/guide/" }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="/styles/guide.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="brand" href="/"><span class="brand-mark">书简</span></a>
+  <p class="brand-tag">电子书处理 · 繁简转换 · 竖横排 · 日文注音</p>
+</header>
+
+<main class="wrap">
+  <article class="sheet">
+    <nav class="crumb" aria-label="面包屑">
+      <a href="/">书简</a><span class="sep">›</span><span aria-current="page">使用说明</span>
+    </nav>
+
+    <h1>电子书处理指南</h1>
+    <p class="lead">书简是一个纯前端的电子书处理网页——把书拖进浏览器，得到一本处理好的书。繁简转换、竖排横排、日文注音，全都在你自己的设备上完成，<b>文件不出本机</b>。下面几页分别说清每项功能怎么用、能做到什么、又做不到什么。</p>
+
+    <h2>书简是做什么的</h2>
+    <p>书简把 EPUB、TXT 这类电子书读进来，只搬章节结构与文字，做完你要的变换，再导出成一本新书。字体、字号这些交给你的阅读器，它不替你决定排版细节。目前处理得最稳妥的是 <strong>EPUB</strong> 与 <strong>TXT</strong> 两种格式。</p>
+    <p>三件事它做得最顺：</p>
+    <ul>
+      <li><strong>繁体转简体</strong>（也能简转繁）——词级转换，连用词习惯一起换。</li>
+      <li><strong>竖版转横版</strong>（也能反过来直排）——改的是 EPUB 的排版方向。</li>
+      <li><strong>日文注音</strong>（振假名）——给日文汉字逐词标上假名读音。</li>
+    </ul>
+
+    <h2>文件会不会被上传？</h2>
+    <p>不会。书简没有后端、没有上传、没有任何 API 调用，你的书从头到尾都待在浏览器里。它唯一会联网的地方，是从公共 CDN 加载几个开源库、以及日文注音要用到的分词词典——那些是程序本身，不是你的文件。你甚至可以断网、把网页存下来离线打开，转换照样跑。</p>
+
+    <h2>按需要选一页往下看</h2>
+    <nav class="cards" aria-label="功能页面">
+      <a class="card" href="/guide/traditional-to-simplified/">
+        <span class="card-t">电子书繁体转简体</span>
+        <span class="card-d">把繁体的 EPUB、TXT 转成简体，词级转换，可选台湾 / 香港用词。</span>
+      </a>
+      <a class="card" href="/guide/vertical-to-horizontal/">
+        <span class="card-t">电子书竖版转横版</span>
+        <span class="card-d">把竖排右起的 EPUB 转成横排，也能反向做成直排。</span>
+      </a>
+      <a class="card" href="/guide/japanese-furigana/">
+        <span class="card-t">电子书日文注音</span>
+        <span class="card-d">给日文汉字标上振假名，带着假名进 Kindle、微信读书。</span>
+      </a>
+      <a class="card" href="/guide/epub-txt-formats/">
+        <span class="card-t">EPUB 与 TXT 处理方法</span>
+        <span class="card-d">两种格式各适合什么、书简怎么处理、边界在哪。</span>
+      </a>
+    </nav>
+
+    <div class="cta"><a class="btn" href="/">打开书简 →</a></div>
+  </article>
+</main>
+
+<footer class="site-foot">
+  <a href="/">© 2026 书简 · 隐私优先</a>
+</footer>
+
+</body>
+</html>
