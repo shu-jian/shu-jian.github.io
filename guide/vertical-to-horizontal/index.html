@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>电子书竖版转横版 — EPUB 竖排转横排｜书简</title>
-<meta name="description" content="把竖排右起的 EPUB 电子书转成横排，也能反向做成竖排直排：改写排版方向，阅读器据此渲染。只改方向不重排图文，本地完成，文件不上传。">
-<meta name="keywords" content="电子书竖版转横版,epub竖排转横排,竖排转横排,竖版转横版,横排转竖排,直排,繁体竖版书转横排,排版方向">
+<meta name="description" content="竖排右起的 EPUB 怎么改成横排？书简改写排版方向，Kindle、微信读书、Apple Books 据此渲染，章节目录不变；也能反向做成竖排直排。本地完成，文件不上传。">
+<meta name="keywords" content="电子书竖版转横版,epub竖排转横排,竖排转横排,竖版转横版,横排转竖排,直排,繁体竖版书转横排,排版方向,kindle竖排改横排,微信读书竖排epub,apple books 直排">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://shujian.ink/guide/vertical-to-horizontal/">
 
@@ -16,7 +16,7 @@
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="书简">
 <meta property="og:title" content="电子书竖版转横版 — EPUB 竖排转横排">
-<meta property="og:description" content="把竖排右起的 EPUB 转成横排，也能反向直排：改写排版方向，只改方向不重排图文。文件不上传。">
+<meta property="og:description" content="竖排右起的 EPUB 怎么改成横排？改写排版方向，Kindle、微信读书、Apple Books 据此渲染；也能反向直排。文件不上传。">
 <meta property="og:url" content="https://shujian.ink/guide/vertical-to-horizontal/">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://shujian.ink/og.jpg">
@@ -46,6 +46,39 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "竖排电子书为什么在手机上读着累？",
+      "acceptedAnswer": { "@type": "Answer", "text": "手机屏幕又窄又长，正好和竖排需要的横向宽度相反：一屏能放下的行数少、翻页变得频繁，行首行尾也总在你不习惯的一侧，扫读时眼睛要不停地重新找位置。加上有些阅读器对竖排的支持只是“能显示”，标点、数字、英文夹杂时容易歪，所以很多人把方向换成横排。" }
+    },
+    {
+      "@type": "Question",
+      "name": "竖排 EPUB 转横排会丢章节或目录吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不会。章节划分、目录（TOC）和正文文字原样保留，书简只改这本书的排版方向，不动内容本身，也不会替你重排图文、调页边距。" }
+    },
+    {
+      "@type": "Question",
+      "name": "TXT 能不能转排版方向？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不能。排版方向要靠样式表记录，只在 EPUB 这类富文本格式里成立。纯 TXT 只是一串字符，不带任何样式，也就无所谓竖排横排，最后是横是竖完全由阅读器自己决定。想换排版方向，输出格式必须选 EPUB；用 Kobo 的话也可以选 KEPUB，它是 Kobo 专用的 EPUB 变体，同样带排版方向。" }
+    },
+    {
+      "@type": "Question",
+      "name": "能不能反过来，把横排改成竖排直排？",
+      "acceptedAnswer": { "@type": "Answer", "text": "能。方向是双向的，书简既能竖版转横版，也能横版转竖版——排版方向选“竖排”即可，想要直排沉浸感的人反过来用就行。" }
+    },
+    {
+      "@type": "Question",
+      "name": "哪些阅读器认得 EPUB 的排版方向？",
+      "acceptedAnswer": { "@type": "Answer", "text": "Kindle、微信读书、Apple Books、Kobo 都认得 EPUB 里的排版方向，导入后就按横排渲染。书简没有后端、也不接任何阅读器账号，需要你手动把无 DRM 的 EPUB 导出到本地、转换后再导回阅读器，全程没有自动同步。" }
+    }
+  ]
+}
+</script>
 
 <link rel="stylesheet" href="/styles/guide.css">
 </head>
@@ -62,25 +95,29 @@
       <a href="/">书简</a><span class="sep">›</span><a href="/guide/">使用说明</a><span class="sep">›</span><span aria-current="page">电子书竖版转横版</span>
     </nav>
 
-    <h1>电子书竖版转横版（EPUB）</h1>
-    <p class="lead">台湾、香港、日文原版的书常是<b>竖排右起</b>，在有些阅读器上读着别扭。书简能把 EPUB 的排版方向改成横排——也能反过来，把横排做成竖排直排。</p>
+    <h1>电子书竖版转横版：竖排 EPUB 怎么改成横排</h1>
+    <p class="lead">台湾、香港、日文原版的书常是<b>竖排右起</b>，在手机和有些阅读器上读着别扭。书简能把 EPUB 的排版方向改成横排——也能反过来，把横排做成竖排直排。</p>
 
-    <h2>竖排书是怎么回事</h2>
-    <p>传统中文与日文书是竖排：字从上往下走，行从右往左排。台湾、香港出的电子书，以及日文原版，很多沿用这种排法。竖排本身很美，但如果你的阅读器对竖排支持一般，或你个人更习惯横排扫读，就会想换个方向。</p>
+    <h2>竖排电子书为什么在手机上读着累？</h2>
+    <p>传统中文与日文书是竖排：字从上往下走，行从右往左排。台湾、香港出的电子书，以及日文原版，很多沿用这种排法。竖排本身很美，但手机屏幕又窄又长，正好和竖排需要的横向宽度相反：一屏能放下的行数少、翻页变得频繁，行首行尾也总在你不习惯的一侧，扫读时眼睛要不停地重新找位置。再加上有些阅读器对竖排的支持只是「能显示」，标点、数字、英文夹杂时容易歪，于是很多人干脆把方向换成横排。</p>
 
-    <h2>书简怎么做：改写 EPUB 的排版方向</h2>
-    <p>书简不逐页重排，而是改写 EPUB 里记录“这本书该怎么排”的<strong>排版方向</strong>（也就是 <kbd>writing-mode</kbd>）：</p>
+    <h2>竖排 EPUB 是怎么改成横排的？</h2>
+    <p>书简不逐页重排，而是改写 EPUB 里记录“这本书该怎么排”的<strong>排版方向</strong>——也就是样式表里的 <kbd>writing-mode</kbd>，以及配套的页进方向：</p>
     <ul>
-      <li><strong>横排</strong>：从左到右、从上到下。</li>
-      <li><strong>竖排（直排）</strong>：从上到下、行从右往左。</li>
+      <li><strong>横排</strong>（<kbd>horizontal-tb</kbd>）：从左到右、从上到下。</li>
+      <li><strong>竖排 / 直排</strong>（<kbd>vertical-rl</kbd>）：从上到下、行从右往左。</li>
       <li><strong>保持原书</strong>：不动方向。</li>
     </ul>
-    <p>阅读器读到这个方向，就按它来渲染。所以书简<strong>既能竖版转横版，也能横版转竖版</strong>——想要直排沉浸感的人，反过来用就行。</p>
+    <p>阅读器打开时读到这个方向，就按它来渲染整本书。字体、字号、行距仍由阅读器和你的阅读设置决定，书简不插手。</p>
 
-    <h2>只在 EPUB 这类格式里生效</h2>
-    <p>排版方向是“富文本”才有的概念，所以它在 <strong>EPUB、KEPUB、PDF</strong> 里生效；<strong>TXT、MOBI</strong> 这类不带排版方向的格式，选了也不会起作用。想转排版方向，请用 EPUB。</p>
+    <h3>能不能反过来，把横排改成竖排直排？</h3>
+    <p>能。方向是双向的，书简<strong>既能竖版转横版，也能横版转竖版</strong>——排版方向选「竖排」即可。想要直排沉浸感、或想把简体横排书做成直排来读的人，反过来用就行。</p>
 
-    <h2>操作步骤</h2>
+    <h2>TXT 能不能转排版方向？</h2>
+    <p>不能，而且这不是功能没做，是格式本身没有这个概念。排版方向要靠样式表记录，所以只在 <strong>EPUB</strong> 这类富文本格式里成立。<strong>纯 TXT 只是一串字符，不带任何样式，也就无所谓竖排横排</strong>——它最后是横是竖，完全由你用哪个阅读器打开、阅读器自己怎么排决定，书简改不了，选了也不会起作用。<strong>想换排版方向，输出格式必须选 EPUB。</strong></p>
+    <p>用 Kobo 的话，输出格式还可以选 <strong>KEPUB（Kobo 专用）</strong>——它是 Kobo 优化过的 EPUB 变体，同样带排版方向，导出的文件名是 <code>.kepub.epub</code>，拷进 Kobo 后翻页和进度统计会更贴合设备。不确定就选 EPUB，Kobo 也能正常读。</p>
+
+    <h2>竖版转横版具体怎么操作？</h2>
     <ol class="steps">
       <li>打开书简（点文末按钮回首页工具）。</li>
       <li>输出格式选 <kbd>EPUB</kbd>。</li>
@@ -89,12 +126,15 @@
       <li>把书拖进去，点「开始转换」，下载。</li>
     </ol>
 
-    <h2>有哪些边界</h2>
+    <h2>Kindle、微信读书、Apple Books 上的竖排书怎么改横排？</h2>
+    <p>从台湾、香港或日本书源拿到的 EPUB，常是竖排右起。书简没有后端、也不接任何阅读器账号，所以要你手动走三步：先把这本<strong>无 DRM 的 EPUB</strong> 导出到本地，拖进书简、排版方向选「横排」并下载，再手动导回阅读器——Kindle 用「发送至 Kindle」，微信读书用「导入本地图书」，Apple Books 把文件拖进书架。<strong>Kindle、微信读书、Apple Books、Kobo 都认得 EPUB 里的排版方向</strong>，导入后就按横排渲染，章节和目录仍是原来那份。全程没有自动同步，也不处理带 DRM 的商店书。</p>
+
+    <h2>转横排会丢章节、目录或原文吗？</h2>
     <div class="note">
       <ul>
-        <li><strong>改的是方向，不是重排</strong>：书简只改这本书的排版方向，不会替你重排图文、调页边距；行距、标点位置由阅读器按新方向渲染。</li>
-        <li><strong>结构保持</strong>：章节、目录原样保留。</li>
-        <li><strong>本地完成</strong>：文件不上传。</li>
+        <li><strong>不会丢结构</strong>：章节划分、目录（TOC）和正文文字原样保留——书简只改这本书的排版方向，不动内容本身。</li>
+        <li><strong>改的是方向，不是重排</strong>：书简不会替你重排图文、调页边距；行距、字号、标点位置都交给阅读器按新方向渲染。</li>
+        <li><strong>本地完成</strong>：转换全在你的浏览器里跑，文件不上传，书简没有服务器存你的书。</li>
       </ul>
     </div>
 

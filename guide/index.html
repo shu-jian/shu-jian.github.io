@@ -31,6 +31,39 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "书简是做什么的？",
+      "acceptedAnswer": { "@type": "Answer", "text": "书简是一个纯前端的电子书处理网页。把 EPUB、TXT 拖进浏览器，它只搬章节结构与文字，做完繁简转换、竖排横排切换或日文注音，再导出成一本新书，字体字号交给你的阅读器决定。" }
+    },
+    {
+      "@type": "Question",
+      "name": "用书简处理电子书需要上传文件吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不需要。书简没有后端、没有上传、没有任何 API 调用，你的书从头到尾都待在浏览器里。唯一会联网的地方是从公共 CDN 加载几个开源库、以及日文注音要用到的分词词典，那些是程序本身，不是你的文件。" }
+    },
+    {
+      "@type": "Question",
+      "name": "书简支持哪些电子书格式？",
+      "acceptedAnswer": { "@type": "Answer", "text": "目前处理得最稳妥的是 EPUB 与 TXT 两种格式。繁简转换 EPUB 和 TXT 都行；竖横排切换改的是 EPUB 的排版方向，所以只对 EPUB 有效；日文注音用 HTML ruby 写进书里，输出要选 EPUB，纯 TXT 存不下假名。" }
+    },
+    {
+      "@type": "Question",
+      "name": "书简需要注册或付费吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不用注册、不用登录、不收费。打开网页就能用，没有账号体系，也就没有地方存你的数据。" }
+    },
+    {
+      "@type": "Question",
+      "name": "书简能离线使用吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "能。把网页存下来断网打开，繁简转换和竖横排切换照样跑；只有日文注音第一次需要联网加载分词词典，之后走缓存，断网也能继续用。" }
+    }
+  ]
+}
+</script>
 
 <link rel="stylesheet" href="/styles/guide.css">
 </head>
@@ -47,22 +80,26 @@
       <a href="/">书简</a><span class="sep">›</span><span aria-current="page">使用说明</span>
     </nav>
 
-    <h1>电子书处理指南</h1>
+    <h1>电子书处理指南：繁简转换、竖横排、日文注音怎么做</h1>
     <p class="lead">书简是一个纯前端的电子书处理网页——把书拖进浏览器，得到一本处理好的书。繁简转换、竖排横排、日文注音，全都在你自己的设备上完成，<b>文件不出本机</b>。下面几页分别说清每项功能怎么用、能做到什么、又做不到什么。</p>
 
-    <h2>书简是做什么的</h2>
-    <p>书简把 EPUB、TXT 这类电子书读进来，只搬章节结构与文字，做完你要的变换，再导出成一本新书。字体、字号这些交给你的阅读器，它不替你决定排版细节。目前处理得最稳妥的是 <strong>EPUB</strong> 与 <strong>TXT</strong> 两种格式。</p>
+    <h2>电子书繁简转换、竖横排、日文注音，浏览器里能直接做吗</h2>
+    <p>能。书简把 EPUB、TXT 这类电子书读进来，只搬章节结构与文字，做完你要的变换，再导出成一本新书。字体、字号这些交给你的阅读器，它不替你决定排版细节。目前处理得最稳妥的是 <strong>EPUB</strong> 与 <strong>TXT</strong> 两种格式。</p>
     <p>三件事它做得最顺：</p>
     <ul>
-      <li><strong>繁体转简体</strong>（也能简转繁）——词级转换，连用词习惯一起换。</li>
-      <li><strong>竖版转横版</strong>（也能反过来直排）——改的是 EPUB 的排版方向。</li>
-      <li><strong>日文注音</strong>（振假名）——给日文汉字逐词标上假名读音。</li>
+      <li><strong>繁体转简体</strong>（也能简转繁）——词级转换，连用词习惯一起换，EPUB 和 TXT 都行。</li>
+      <li><strong>竖版转横版</strong>（也能反过来直排）——改的是 EPUB 的排版方向，所以只对 EPUB 有效。</li>
+      <li><strong>日文注音</strong>（振假名）——给日文汉字逐词标上假名读音，用 HTML <kbd>&lt;ruby&gt;</kbd> 写进书里，输出要选 EPUB（纯 TXT 存不下假名）。</li>
     </ul>
 
-    <h2>文件会不会被上传？</h2>
-    <p>不会。书简没有后端、没有上传、没有任何 API 调用，你的书从头到尾都待在浏览器里。它唯一会联网的地方，是从公共 CDN 加载几个开源库、以及日文注音要用到的分词词典——那些是程序本身，不是你的文件。你甚至可以断网、把网页存下来离线打开，转换照样跑。</p>
+    <h2>处理电子书要上传文件吗？要注册或付费吗</h2>
+    <p>不用上传。书简没有后端、没有上传、没有任何 API 调用，你的书从头到尾都待在浏览器里。它唯一会联网的地方，是从公共 CDN 加载几个开源库、以及日文注音要用到的分词词典——那些是程序本身，不是你的文件。</p>
+    <p>也不用注册、不用登录、不收费：打开网页就能用，没有账号体系，也就没有地方存你的数据。你甚至可以断网、把网页存下来离线打开，繁简转换和竖横排切换照样跑；只有日文注音第一次需要联网加载分词词典，之后走缓存，断网也能继续用。</p>
 
-    <h2>按需要选一页往下看</h2>
+    <h2>从 Kindle、微信读书、Apple Books 导出的书，该看哪一页</h2>
+    <p>从 Kindle、微信读书、Apple Books、Kobo 里导出来的书，问题其实很集中。台湾、香港书源买的 EPUB 多半是繁体，看着累就走<a href="/guide/traditional-to-simplified/">电子书繁体转简体</a>；想练正体阅读或发给台湾朋友，走<a href="/guide/simplified-to-traditional/">简体转繁体（台湾正体）</a>。日文原版和部分港台文学书是竖排右起，在手机上翻页别扭，走<a href="/guide/vertical-to-horizontal/">竖版转横版</a>，也能反过来做成直排。日语原著卡在汉字读音，走<a href="/guide/japanese-furigana/">日文注音</a>，给汉字标上振假名再导回阅读器。不确定该导出成什么格式，先看 <a href="/guide/epub-txt-formats/">EPUB 与 TXT 处理方法</a>。要说清楚的是，书简不连接任何阅读器账号：你自己从阅读器导出 EPUB 或 TXT，在书简里处理完下载，再手动导回去。</p>
+
+    <h2>每项功能具体怎么用，点进对应的一页</h2>
     <nav class="cards" aria-label="功能页面">
       <a class="card" href="/guide/traditional-to-simplified/">
         <span class="card-t">电子书繁体转简体</span>

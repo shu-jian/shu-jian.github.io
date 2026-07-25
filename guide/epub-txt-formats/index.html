@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>EPUB 与 TXT 电子书怎么处理 — 格式说明与支持范围｜书简</title>
-<meta name="description" content="EPUB 和 TXT 各适合什么、书简怎么处理这两种电子书、有哪些边界。只搬章节与文字，字体交给阅读器；全部在浏览器本地完成，文件不上传。">
-<meta name="keywords" content="EPUB是什么,TXT电子书,epub转txt,电子书格式转换,保留章节,EPUB与TXT区别,电子书本地处理,书简">
+<title>EPUB 与 TXT 怎么转换 — 该选哪个、会不会自动分章｜书简</title>
+<meta name="description" content="电子书选 EPUB 还是 TXT、TXT 转 EPUB 会不会自动分章节、转换后目录会不会丢，以及 Kindle、微信读书、Apple Books 怎么导入。全部在浏览器本地完成，文件不上传。">
+<meta name="keywords" content="EPUB是什么,TXT电子书,epub转txt,txt转epub,电子书格式转换,txt自动分章,保留目录,EPUB与TXT区别,电子书本地处理,书简">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://shujian.ink/guide/epub-txt-formats/">
 
@@ -15,8 +15,8 @@
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="书简">
-<meta property="og:title" content="EPUB 与 TXT 电子书怎么处理 — 格式说明与支持范围">
-<meta property="og:description" content="EPUB 和 TXT 各适合什么、书简怎么处理这两种电子书、边界在哪。只搬章节与文字，文件本地处理不上传。">
+<meta property="og:title" content="EPUB 与 TXT 怎么转换 — 该选哪个、会不会自动分章">
+<meta property="og:description" content="电子书选 EPUB 还是 TXT、TXT 转 EPUB 会不会自动分章、目录会不会丢，以及各阅读器怎么导入。文件本地处理不上传。">
 <meta property="og:url" content="https://shujian.ink/guide/epub-txt-formats/">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://shujian.ink/og.jpg">
@@ -39,18 +39,28 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "文件会不会被上传？",
-      "acceptedAnswer": { "@type": "Answer", "text": "不会。整个处理在你的浏览器本地完成，没有上传或后端；只有开源库和日语词典从网络加载，你的书不出本机。" }
+      "name": "电子书选 EPUB 还是 TXT？",
+      "acceptedAnswer": { "@type": "Answer", "text": "想保留章节结构、加注音或改排版方向，选 EPUB；只想要干净的纯文字、体积小、哪儿都打得开，或者要喂给别的工具，选 TXT。" }
     },
     {
       "@type": "Question",
-      "name": "EPUB 和 TXT 该选哪个？",
-      "acceptedAnswer": { "@type": "Answer", "text": "想保留章节、加注音或改排版方向，选 EPUB；只要干净的纯文字、或要喂给别的工具，选 TXT。" }
+      "name": "TXT 转 EPUB 会自动分章节吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "能认出标题就会。书简读 TXT 时逐行找章节标题：整行是「第一章」「第十回」这类写法，或者「序章」「楔子」「引子」「尾声」「后记」「番外」「终章」，就开一个新章，这一行成为章节标题。章节号支持中文数字和阿拉伯数字，繁体写法也认。一个标题都没匹配上时，书简不硬猜，会把整本按单章处理并提示「未识别到章节标题」。" }
     },
     {
       "@type": "Question",
-      "name": "TXT 能保留排版和注音吗？",
-      "acceptedAnswer": { "@type": "Answer", "text": "不能。振假名、竖横排这些需要富文本，纯 TXT 存不下，请导出成 EPUB。" }
+      "name": "转换之后目录会不会丢？",
+      "acceptedAnswer": { "@type": "Answer", "text": "看你导出成什么。导出 EPUB 目录留得住：原书的章节层级会读进书简的中间结构，导出时重新生成 EPUB 3 导航文档，并附一份旧版阅读器认的 NCX 目录，在阅读器里照样能点目录跳章。导出 TXT 则没有目录可言，章节标题只作为普通的一行文字留在正文里。" }
+    },
+    {
+      "@type": "Question",
+      "name": "TXT 能保留注音和竖排吗？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不能。振假名、竖横排、图片和注释都需要富文本，纯 TXT 只有光秃秃的文字，存不下这些。想要注音或竖横排，导出请选 EPUB。" }
+    },
+    {
+      "@type": "Question",
+      "name": "电子书文件会不会被上传到服务器？",
+      "acceptedAnswer": { "@type": "Answer", "text": "不会。书简没有后端、上传或 API，你的书从头到尾都在浏览器里。唯一联网的是从公共 CDN 加载开源库与日语词典，那是程序，不是你的文件。断网离线也能用。" }
     }
   ]
 }
@@ -71,30 +81,50 @@
       <a href="/">书简</a><span class="sep">›</span><a href="/guide/">使用说明</a><span class="sep">›</span><span aria-current="page">EPUB 与 TXT 处理方法</span>
     </nav>
 
-    <h1>EPUB 与 TXT：书简怎么处理这两种电子书</h1>
-    <p class="lead">书简目前处理得最稳妥的是 <b>EPUB</b> 与 <b>TXT</b>。这页说清两种格式各适合什么、书简对它们做什么、又不做什么。</p>
+    <h1>EPUB 与 TXT 怎么转换：书简处理这两种电子书的方法</h1>
+    <p class="lead">书简目前处理得最稳妥的是 <b>EPUB</b> 与 <b>TXT</b>。这页说清两种格式该怎么选、TXT 转 EPUB 会不会自动分章、目录会不会丢，以及转好之后怎么放进阅读器。</p>
 
-    <h2>EPUB 与 TXT 各是什么</h2>
+    <h2>电子书选 EPUB 还是 TXT？两种格式有什么区别</h2>
     <ul>
-      <li><strong>EPUB</strong>：主流电子书格式，带章节、目录和排版信息。Apple Books、Kobo、微信读书、多看等原生支持，Kindle 也能导入。想保留结构、加注音或改排版方向，选它。</li>
-      <li><strong>TXT</strong>：最朴素的纯文字，没有章节样式、图片或排版，胜在通用、体积小、哪儿都打得开。只想要干净文字、或要喂给别的工具，选它。</li>
+      <li><strong>EPUB</strong>：主流电子书格式，带章节、目录和排版信息。Apple Books、Kobo、微信读书、多看等原生支持，Kindle 也能导入。想保留章节结构、加注音或改排版方向，选它。</li>
+      <li><strong>TXT</strong>：最朴素的纯文字，没有章节样式、图片或排版，胜在通用、体积小、哪儿都打得开。只想要干净的纯文字、或者要喂给别的工具，选它。</li>
     </ul>
 
-    <h2>书简的处理哲学：只搬章节与文字</h2>
+    <h2>书简转换电子书时会改动什么？</h2>
     <p>书简把每本书先读成一套统一的“中间表示”——章节、标题层级、目录结构和文字——再在这套结构上做变换，导出成新书。它有意<strong>只搬章节结构与文字，字体、字号这些交给你的阅读器</strong>，不替你锁死排版。好处是：无论输入是什么，繁简、注音、排版方向这些变换都作用在同一套干净结构上，结果稳定、可预期。</p>
 
-    <h2>读入与导出：这次重点是 EPUB 与 TXT</h2>
+    <h2>书简能读入和导出哪些格式？</h2>
     <ul>
       <li><strong>读入</strong>：EPUB、TXT 最稳。书简也能读 MOBI、AZW3、PDF、DOCX 等格式，但它们目前处理得还不够完美；遇到这些，建议先用 <strong>Calibre</strong> 等工具转成 EPUB，再拿到书简来做繁简、注音、排版。</li>
       <li><strong>导出</strong>：EPUB、TXT，以及 KEPUB（Kobo 专用）、MOBI、PDF。</li>
     </ul>
 
-    <h2>明说做不到的</h2>
+    <h2>TXT 转 EPUB 会自动分章节吗？</h2>
+    <p>能认出标题就会。书简读 TXT 时会逐行找章节标题：整行是<strong>「第一章」「第十回」</strong>这类写法，或者<strong>「序章」「楔子」「引子」「尾声」「后记」「番外」「终章」</strong>，就开一个新章，这一行成为该章的标题，后面的文字归进这一章。章节号支持中文数字和阿拉伯数字，繁体写法（第十回、後記、終章）也认。切出来的章节，导出 EPUB 时会写进目录。</p>
+    <p>要是整本书一个标题都没匹配上（比如标题写成「01」，或者只靠空行分隔），书简<strong>不会硬猜</strong>，会把整本按单章处理，并在结果里提示「未识别到章节标题」——这时先在 TXT 里把标题改成上面那些常见写法，再转一次就行。</p>
+
+    <h2>转换之后目录会不会丢？</h2>
+    <ul>
+      <li><strong>导出 EPUB：目录留得住。</strong>原书进来时的章节层级和目录会读进书简的中间结构，导出时重新生成 EPUB 3 的导航文档，同时附一份旧版阅读器认的 NCX 目录，所以在阅读器里照样能点目录跳章。TXT 源的书也一样，上面切出来的章节会成为新 EPUB 的目录。</li>
+      <li><strong>导出 TXT：没有目录可言。</strong>TXT 格式里根本没有「目录」这个东西，章节标题会作为普通的一行文字留在正文里，阅读器不会拿它做跳转。想保住目录，导出请选 EPUB。</li>
+    </ul>
+
+    <h2>TXT 能保留注音和竖排吗？</h2>
     <div class="note">
-      <p>纯 TXT 保留不了图片、注释、排版方向和振假名——这些需要“富文本”，而 TXT 只有光秃秃的文字。想要注音或竖横排，导出请选 EPUB。</p>
+      <p>不能。纯 TXT 保留不了图片、注释、排版方向和振假名——这些需要“富文本”，而 TXT 只有光秃秃的文字。想要注音或竖横排，导出请选 EPUB。</p>
     </div>
 
-    <h2>文件会不会被上传？</h2>
+    <h2>Kindle、微信读书、Apple Books 怎么导入？</h2>
+    <p>书简没有后端，也不接阅读器账号，<strong>不会替你同步</strong>：在书简转好、下载到本机，再自己导进阅读器。</p>
+    <ul>
+      <li><strong>Kindle</strong>：近年的 Send to Kindle（邮件 / 网页 / App）已接受 EPUB，也收 TXT，由亚马逊转成自家格式；用数据线直接拷 EPUB 不一定认。</li>
+      <li><strong>微信读书</strong>：网页版或 App 的「上传本地文件」，EPUB 和 TXT 都能导入。</li>
+      <li><strong>Apple Books</strong>：EPUB 用「拷贝到图书」打开，它不收 TXT。</li>
+      <li><strong>Kobo</strong>：接上电脑当 U 盘，把 EPUB 拷进去即可。</li>
+    </ul>
+    <p>以上导入的都是你自己的、无 DRM 文件。</p>
+
+    <h2>电子书文件会不会被上传到服务器？</h2>
     <p>不会。书简没有后端、上传或 API，你的书从头到尾都在浏览器里。唯一联网的是从公共 CDN 加载开源库与日语词典——那是程序，不是你的文件。断网离线也能用。</p>
 
     <div class="cta"><a class="btn" href="/">打开书简 →</a></div>
