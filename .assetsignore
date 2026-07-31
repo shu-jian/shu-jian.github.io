@@ -1,0 +1,27 @@
+# 不上传到 Cloudflare 静态资源的工程物(gitignore 语法)
+# 注意:此前 .git/ 被整包当作静态资源上传,导致 https://shujian.ink/.git/ 可公开访问。
+
+**/.git
+**/.github
+**/.wrangler
+**/.claude
+**/.vscode
+**/node_modules
+
+# 部署配置本身
+wrangler.jsonc
+wrangler.toml
+.assetsignore
+.gitignore
+
+# 只留工作目录、不入库的工程物(见 .gitignore 说明)
+CLAUDE.md
+docs
+test
+worker
+
+# 杂项
+**/.DS_Store
+*.log
+.dev.vars*
+.env*

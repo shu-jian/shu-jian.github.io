@@ -1,0 +1,15 @@
+{
+  // shujian.ink —— 纯静态资源 Worker(无 Worker 脚本,仓库根目录整体作为 assets)
+  // 与线上 version 60(2026-07-31 10:40 UTC)的配置保持一致。
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "shujian",
+  "compatibility_date": "2026-07-31",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    // 部署面即仓库根目录;排除项见同目录 .assetsignore
+    "directory": "."
+  }
+}
